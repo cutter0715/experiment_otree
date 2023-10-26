@@ -1,0 +1,29 @@
+{{ block title }}
+    Study Complete. Thank You!
+{{ endblock }}
+
+{{ block content }}
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+    </style>
+    
+    <p>
+        You earned a total of {{ participant.payoff }} from the six rounds of the labor market.
+    </p>
+    <p>
+        Following the completion of all sessions of this study I will determine a cash payment per Lira, where the payment rate per Lira results in $15 total compensation for the participant (or participants, if tied) who earned the most Lira, and $5.00 for the participant (or participants, if tied) who earned the least Lira. Everyone will receive something between $5 and $15, depending on the number of Lira earned, to result in an expected average compensation around $10.
+    </p>
+    <p>
+        Your earnings will be disbursed to you via Amazon gift card within 2 weeks after the completion of the final study session.
+    </p>
+    <p>
+        In order to issue your payment, I am required to collect your name and email. This is the email that the Amazon gift card will be sent to. Your identity will remain anonymous and your responses will be kept confidential.
+    </p>
+    {{ formfields }}
+
+    {{ next_button }}
+
+{{ endblock }}

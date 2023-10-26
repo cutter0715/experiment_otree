@@ -1,0 +1,249 @@
+{{ block title }}
+    Examples
+{{ endblock }}
+
+{{ block content }}
+
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+    </style>
+
+    {{ if session.capped_condition == False }}
+
+        <p>
+            The following examples illustrate how to calculate firm and employee payoffs based on different combinations of wage and production level.
+        </p>
+        <h5>
+            Example 1
+        </h5>
+        <p>
+            Suppose the agreed upon wage is 20 Lira and production level is 0.5. Firm and employee payoffs would be calculated as follows:
+        </p>
+        {{ if session.fixed_contract_condition == True }}
+            <p>
+                <div style="text-indent: 88px;">
+                    Firm payoff = (120 Lira × production level) - wage
+                </div>
+                <div style="text-indent: 173px;">
+                    = (120 Lira × 0.5) - 20 Lira 
+                </div>
+                <div style="text-indent: 173px;">
+                    = 40 Lira
+                </div>
+            </p>
+            <p>
+                <div style="text-indent: 50px;">
+                    Employee payoff = wage - cost of effort
+                </div>
+                <div style="text-indent: 173px;">
+                    = 20 Lira - 6 Lira 
+                </div>
+                <div style="text-indent: 173px;">
+                    = 14 Lira
+                </div>
+            </p>
+        {{ else }}
+            <p>
+                <div style="text-indent: 88px;">
+                    Firm payoff = (120 Lira × production level) - wage
+                </div>
+                <div style="text-indent: 173px;">
+                    = (120 Lira × 0.5) - 15 Lira 
+                </div>
+                <div style="text-indent: 173px;">
+                    = 45 Lira
+                </div>
+            </p>
+            <p>
+                <div style="text-indent: 50px;">
+                    Employee payoff = wage- cost of effort
+                </div>
+                <div style="text-indent: 173px;">
+                    = 15 Lira - 6 Lira 
+                </div>
+                <div style="text-indent: 173px;">
+                    = 9 Lira
+                </div>
+            </p>
+        {{ endif }}
+        <h5>
+            Example 2
+        </h5>
+        <p>
+            Suppose the agreed upon wage is 40 and production level is 0.1. Firm and employee payoffs would be calculated as follows:
+        </p>
+        {{ if session.fixed_contract_condition == True }}
+            <p>
+                <div style="text-indent: 88px;">
+                    Firm payoff = (120 Lira × production level) - wage
+                </div>
+                <div style="text-indent: 173px;">
+                    = (120 Lira × 0.1) - 40 Lira 
+                </div>
+                <div style="text-indent: 173px;">
+                    = -28 Lira
+                </div>
+            </p>
+            <p>
+                <div style="text-indent: 50px;">
+                    Employee payoff = wage - cost of effort
+                </div>
+                <div style="text-indent: 173px;">
+                    = 40 Lira - 0 Lira 
+                </div>
+                <div style="text-indent: 173px;">
+                    = 40 Lira
+                </div>
+            </p>
+        {{ else }}
+            <p>
+                <div style="text-indent: 88px;">
+                    Firm payoff = (120 Lira × production level) - wage
+                </div>
+                <div style="text-indent: 173px;">
+                    = (120 Lira × 0.1) - 15 Lira 
+                </div>
+                <div style="text-indent: 173px;">
+                    = -3 Lira
+                </div>
+            </p>
+            <p>
+                <div style="text-indent: 50px;">
+                    Employee payoff = wage - cost of effort
+                </div>
+                <div style="text-indent: 173px;">
+                    = 15 Lira - 0 Lira 
+                </div>
+                <div style="text-indent: 173px;">
+                    = 15 Lira
+                </div>
+            </p>
+        {{ endif }}
+        <h5>
+            Example 3
+        </h5>
+        <p>
+            Suppose the agreed upon wage is 60 and the chosen production level is 1.0. Firm and employee payoffs would be calculated as follows:
+        </p>
+        <p>
+            <div style="text-indent: 88px;">
+                Firm payoff = (120 Lira × production level) - wage
+            </div>
+            <div style="text-indent: 173px;">
+                = (120 Lira × 1.0) - 60 Lira 
+            </div>
+            <div style="text-indent: 173px;">
+                = 60 Lira
+            </div>
+        </p>
+        <p>
+            <div style="text-indent: 50px;">
+                Employee payoff = wage - cost of effort
+            </div>
+            <div style="text-indent: 173px;">
+                = 60 Lira - 18 Lira 
+            </div>
+            <div style="text-indent: 173px;">
+                = 42 Lira
+            </div>
+        </p>
+
+    {{ else }}
+
+        <p>
+            The following examples illustrate how to calculate firm and employee payoffs based on different combinations of wage and production level.
+        </p>
+        <h5>
+            Example 1
+        </h5>
+        <p>
+            Suppose the firm decided to let the employee set the employee's wage. The firm set a cap of 100 Lira, meaning the employee cannot set their wage higher than 100 Lira. The employee then set their wage at 90 Lira. The chosen production level is 0.5. Firm and employee payoffs would be calculated as follows:
+        </p>
+        <p>
+            <div style="text-indent: 88px;">
+                Firm payoff = (120 Lira × production level) - wage
+            </div>
+            <div style="text-indent: 173px;">
+                = (120 Lira × 0.5) - 90 Lira 
+            </div>
+            <div style="text-indent: 173px;">
+                = -30 Lira
+            </div>
+        </p>
+        <p>
+            <div style="text-indent: 50px;">
+                Employee payoff = wage - cost of effort
+            </div>
+            <div style="text-indent: 173px;">
+                = 90 Lira - 6 Lira 
+            </div>
+            <div style="text-indent: 173px;">
+                = 84 Lira
+            </div>
+        </p>
+        <h5>
+            Example 2
+        </h5>
+        <p>
+            Suppose the firm decided to set the employee's wage at 40 Lira. The chosen production level is 0.8. Firm and employee payoffs would be calculated as follows:
+        </p>
+        <p>
+            <div style="text-indent: 88px;">
+                Firm payoff = (120 Lira × production level) - wage
+            </div>
+            <div style="text-indent: 173px;">
+                = (120 Lira × 0.8) - 40 Lira 
+            </div>
+            <div style="text-indent: 173px;">
+                = 56 Lira
+            </div>
+        </p>
+        <p>
+            <div style="text-indent: 50px;">
+                Employee payoff = wage - cost of effort
+            </div>
+            <div style="text-indent: 173px;">
+                = 40 Lira - 12 Lira 
+            </div>
+            <div style="text-indent: 173px;">
+                = 28 Lira
+            </div>
+        </p>
+        <h5>
+            Example 3
+        </h5>
+        <p>
+            Suppose the firm decided to let the employee set the employee's wage. The firm set a cap of 40 Lira, meaning the employee cannot set their wage higher than 40 Lira. The employee then set their wage at 40 Lira. The chosen production level is 0.8. Firm and employee payoffs would be calculated as follows:
+        </p>
+        <p>
+            <div style="text-indent: 88px;">
+                Firm payoff = (120 Lira × production level) - wage
+            </div>
+            <div style="text-indent: 173px;">
+                = (120 Lira × 0.8) - 40 Lira 
+            </div>
+            <div style="text-indent: 173px;">
+                = 56 Lira
+            </div>
+        </p>
+        <p>
+            <div style="text-indent: 50px;">
+                Employee payoff = wage - cost of effort
+            </div>
+            <div style="text-indent: 173px;">
+                = 40 Lira - 12 Lira 
+            </div>
+            <div style="text-indent: 173px;">
+                = 28 Lira
+            </div>
+        </p>
+    {{ endif }}
+
+    {{ next_button }}
+
+{{ endblock }}
+
+

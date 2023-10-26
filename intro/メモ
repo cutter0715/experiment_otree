@@ -1,0 +1,11 @@
+#### メモ ----
+
+# Quiz1.htmlのクイズのコード
+
+'''
+{{ if session.fixed_contract_condition == True }}
+{{ formfield 'comp1' label="Employees receive their wage regardless of the chosen production level." }}
+{{ else }}
+{{ formfield 'comp1' label="The employee’s wage depends on the chosen production level."}}
+{{ endif }}
+'''

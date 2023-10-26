@@ -1,0 +1,254 @@
+<p>
+    Your payoff in round {{ player.round_number }} is: {{ player.payoff }}
+</p>
+<p>
+    The {{ if player.role == "firm" }}employee's{{ else }}firm's{{ endif }} payoff is: {{ other_player_payoff }} 
+</p>
+
+
+#    if group.round_number == 1: #When the Constants.players_per_group is set to None, a list containing a single list (group) of all players is returned from the function get_group_matrix. For example, if there are 4 players and Constants.players_per_group is set to None, get_group_matrix will return [[<Player 1>, <Player 2>, <Player 3>, <Player 4>]] which is a list of all players contained in a list, pay close attention to the brackets. The reason why [0] is appending to self.get_group_matrix() is to extract that single list (group) of all players.
+#        players = group.get_group_matrix()[0]
+#        random.shuffle(players)
+#        even_players = [p for p in players if is_even(p.id_in_subsession)]# The following list comprehension is used to place all of the players with a player ID (or more percisely a player session id) that is even into one group. These ids will be use for matching across subsessions (rounds).
+#        odd_players = [p for p in players if not is_even(p.id_in_subsession)]
+#        self.set_group_matrix([[i, j] for i,j in zip(even_players, odd_players)]) # The zip function will pair elements in the even_players and odd_players list into a tuple (e.g. zip([p3, p1], [p2, p4]) results in (p3, p2), (p1, p4)) A list comprehension is then used to turn each tuple into a list containing a list of groups. [(p3, p2), (p1, p4)] which is a list of tuples is transformed into [[p3, p2], [p1, p4]] which is a list of lists.
+#    else:
+    #       subsession.group_like_round(1) 
+
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        firm = player.group.get_player_by_role(C.FIRM_ROLE)
+        firm_payoff = firm.payoff
+        employee = player.group.get_player_by_role(C.EMPLOYEE_ROLE)
+        employee_payoff = employee.payoff 
+        return dict(
+            firm_payoff = firm_payoff,
+            employee_payoff = employee_payoff
+        )
+
+    {{ if player.session.choice_condition == True }}
+        <p>
+            You will choose whether to let the employee set pay or set pay your self.
+        </p>
+    {{ elif player.session.choice_condition == False and group.employee_set == True  }}
+        <p>
+            The employee will set their own pay.
+        </p>
+    {{ elif player.session.choice_condition == False and group.employee_set == False }}
+        <p>
+            You will set the employee's pay.
+        </p>
+    {{ endif }}
+
+    
+    <div class="tab-pane" id="part4" role="tabpanel" aria-labelledby="part4-tab">
+        <h2 id="otree-title">Step 3 and 4 continued</h2>
+        <p style="text-align:center;">
+            <img src="https://www.dropbox.com/s/ayz8wpni235ijft/Timeline%20Choice%20Condition%20-%20Steps%203%20and%204%20cont.png?raw=1" alt = 'Study Steps' width='900' height='auto'/>
+        </p>
+        <p>
+            If, instead, the firm decides in Step 2 to set the employee’s wage, then in Step 3, the firm chooses a wage level for the employee (see the screen below).
+        </p>
+        <p style="text-align:center;">
+            <img src="https://www.dropbox.com/s/y45w94soo7l9mbo/Decision%20-%20Step%203%20cont.png?raw=1" alt = 'Study Steps' width='auto' height='125'/>
+        </p>
+        <p>
+            The employee’s wage must be an integer between 20 Lira and 120 Lira (inclusive). That is, the employee’s wage must be in the range {20, 21, 22, …, 118, 119, 120}. 
+        </p>
+        {{ if session.fixed_contract_condition == True }}
+            <p>
+                This wage is fixed, meaning, the employee will receive the wage regardless of production level (which will be explained in Step 5).
+            </p>
+        {{ else }}
+            <p>
+                This wage is dependent on production level (which will be explained in Step 5), meaning, the employee will receive the wage according to the following outcomes. 
+            </p>
+            <li>
+                <ul>
+                    Agreed upon wage level if production level is 1.0
+                </ul>
+                <ul>
+                    15 if production level is not 1.0
+                </ul>
+            </li>
+        {{ endif }}
+        <p>
+            In Step 4, the employee learns the wage level set by the firm and decides whether to accept or reject the firm’s offer (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="https://www.dropbox.com/s/13pr2l1wt0m7ku0/Decision%20-%20Step%204%20cont.png?raw=1" alt = 'Study Steps' width='auto' height='170'/>
+        </p>
+        <p>
+            If the employee accepts the firm’s offer, then the firm and the employee both proceed to Step 5.
+        </p>
+        <p>
+            If the employee rejects the firm’s offer, then the labor market for that round ends and both the firm and the employee receive zero Lira for the round.
+        </p>
+        <button type="button" class="btn-primary btn back" onclick="backward()">Back</button>
+        <button type="button" class="btn-primary btn next" onclick="forward()">Next</button>
+    </div>
+
+    <div class="tab-pane" id="part5" role="tabpanel" aria-labelledby="part5-tab">
+        <h2 id="otree-title">Step 5</h2>
+        <p style="text-align:center;">
+            <img src="https://www.dropbox.com/s/22jcmgcc9km9gvc/Timeline%20Choice%20Condition%20-%20Step%205.png?raw=1" alt = 'Study Steps' width='900' height='auto'/>
+        </p>
+        <p>
+            In Step 5, the employees selects a production level (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="https://www.dropbox.com/s/obru6w1axn9wuhw/Decision%20-%20Step%205.png?raw=1" alt = 'Study Steps' width='auto' height='125'/>
+        </p>
+        <p>
+            The production level is a number between 0.1 and 1.0 inclusive. That is, the production level must be in the range {0.1, 0.2, 0.3, …, 0.8, 0.9, 1.0}.
+        </p>
+        <p>
+            The production level generates production costs, and these costs are incurred by the employee. The following table shows the production costs (in Lira) for each production level:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table>
+        <button type="button" class="btn-primary btn back" onclick="backward()" >Back</button>
+        <button type="button" class="btn-primary btn next" onclick="forward()">Next</button>
+    </div>
+
+    <div class="tab-pane" id="part6" role="tabpanel" aria-labelledby="part6-tab">
+        <h2 id="otree-title">Step 6</h2>
+        <p style="text-align:center;">
+            <img src="https://www.dropbox.com/s/4td8w5mz5g4c0bg/Timeline%20Choice%20Condition%20-%20Step%206.png?raw=1" alt = 'Study Steps' width='900' height='auto'/>
+        </p>
+        <p>
+            In Step 6, the firm and the employee learn their payoffs for the round (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="https://www.dropbox.com/s/bk5jip21xx4tsye/Decision%20-%20Step%206.png?raw=1" alt = 'Study Steps' width='auto' height='80'/>
+        </p>
+        <p>
+            The firm's payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Firm payoff = 120 &#215; production level &#8722; wage
+        </p>
+        <p>
+            The employee's payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Employee payoff = wage &#8722; producution cost
+        </p><br><br>
+        <p>
+            Remember:
+        </p>
+        {{ if session.fixed_contract_condition == True }}
+            <p>
+                Wage is fixed, meaning, the employee will receive the wage regardless of production level.
+            </p>
+        {{ else }}
+            <p>
+                Wage is dependent on production level, meaning, the employee will receive the wage according to the following outcomes. 
+            </p>
+            <li>
+                <ul>
+                    Agreed upon wage if production level is 1.0
+                </ul>
+                <ul>
+                    15 if production level is not 1.0
+                </ul>
+            </li>
+        {{ endif }}
+        <p>
+            Production level is a number between 0.1 and 1.0 inclusive. That is, the production level must be in the range {0.1, 0.2, 0.3, …, 0.8, 0.9, 1.0}.
+        </p>
+        <p>
+            Poduction costs are generated by production, and these production costs are incurred by the employee. The following table shows the production costs (in Lira) for each production level:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table><br>
+        <p>
+            Payoffs can be calculated using the following reference table. You can access this table using the following button which will open in a new browser window. This table will be available to you in each round via a button or you can choose to leave the table open in another browser window.
+        </p>
+        <button type="button" class="btn-primary btn back" onclick="backward()">Back</button>
+        <button class="btn-primary btn next" onclick="forward()">Next</button>
+    </div>
+
+    <a href="Disagree.html" target="_blank">
+        <button type='button' class = 'button'>
+            Payoff Reference Table
+        </button> 
+    </a>
+
+    <a href="{% static "study/earnings_spreadsheet.JPG" %}" target="_blank">
+        <button type='button' class = 'button'>
+            Earnings Spreadsheet
+        </button> 
+    </a>
+
+    
+    for player in group.get_players():
+        if player.role == C.FIRM_ROLE:
+            id = player.id_in_group + 1
+            
+        if id % 4 == 0:
+            player.trust_participant = True
+    for player in subsession.get_players():
+        player.participant.trust_part = False #This will keep track of the random individuals that I am assigning to be asked about their trust levels.
+
+        <p>
+            REMOVE FOR LIVE SETTING:<br>
+            {{ player.employee_set_count }}
+        </p>
+
+# This is the old payoff reference table link.
+    {{ if session.fixed_contract_condition == True }}
+        <a href="{{ fixed_payoff_ref_table_link }}" target="_blank">
+    {{ else }}
+        <a href="{{ incentive_payoff_ref_table_link }}" target="_blank">
+    {{ endif }}
+            <button type='button' class = 'button'>
+                Payoff Reference Table
+            </button>
+        </a>
+
+# This is the back button taken out from the instructions page.
+    <button type="button" class="btn-primary btn back" onclick="backward()">Back</button>
+
+# This was the old pages references
+    class Instructions_1(Page):
+        @staticmethod
+        def is_displayed(player: Player): #This page should only be displayed for Choice
+            return player.session.choice_condition == True
+
+    class Instructions_2(Page):
+        @staticmethod
+        def is_displayed(player: Player): #This page should only be displayed for No Choice - Employee Set
+            employee_set = player.group.field_maybe_none('employee_set')
+            if player.session.choice_condition == False and employee_set == True:
+                return True
+
+    class Instructions_3(Page):
+        @staticmethod
+        def is_displayed(player: Player): #This page should only be displayed for No Choice - Firm Set
+            employee_set = player.group.field_maybe_none('employee_set')
+            if player.session.choice_condition == False and employee_set == False:
+                return True
+
+
+# An old reference to the fixed and incentive payoff reference table
+    @staticmethod
+    def vars_for_template(player):
+        return dict(
+            fixed_payoff_ref_table_link = C.fixed_payoff_ref_table_link,
+            incentive_payoff_ref_table_file_path = C.incentive_payoff_ref_table_link
+        )  
+
+# This told the page who the player was partnered with    
+    @staticmethod
+    def vars_for_template(player):
+        for p in player.get_others_in_group():
+            partner_id = p.participant.id_in_session
+        return dict(
+            partner_id = partner_id
+        )

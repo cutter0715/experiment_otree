@@ -1,0 +1,25 @@
+{{ block title }}
+    Labor Market Will Begin
+{{ endblock }}
+
+{{ block content }}
+
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+    </style>
+    
+    <p>
+        Recall that the labor market consists of six independent rounds. In each round, you will assume the role of <b>{{ player.role }}</b>.
+    </p>
+    <p>
+        Click "Next" to proceed to Round 1.
+    </p>
+
+    {{ next_button }}
+
+{{ endblock }}
+
+

@@ -1,0 +1,36 @@
+{{ block title }}
+    Questionnaire (continued)
+{{ endblock }}
+
+{{ block content }}
+
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+        #comp-table {width: 100%;}
+        #comp-table, #comp-table tr, #comp-table th, #comp-table td{border: none !important;}
+        #comp-table tr, th {background-color: white; text-align: center;}
+        #comp-table tr:nth-child(odd) {background-color: #f2f2f2;}
+    </style>
+    
+    <p>
+        Please indicate on a 7-point Likert scale how strongly you agree with the following statements.
+    </p>
+
+    <table id="comp-table" style="border: 0px solid transparent;">
+        <col style="width:44%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:8%">
+        <tr><th></th><th>Completely disagree</th><th></th><th></th><th></th><th></th><th></th><th>Completely agree</th></tr>
+        <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr>
+        <tr><td style="text-align:left">{{ form.rec1.label }}</td>{{ for choice in form.rec1 }}<td>{{ choice }}</td>{{ endfor }}</tr>
+        <tr><td style="text-align:left">{{ form.rec2.label }}</td>{{ for choice in form.rec2 }}<td>{{ choice }}</td>{{ endfor }}</tr>
+        <tr><td style="text-align:left">{{ form.rec3.label }}</td>{{ for choice in form.rec3 }}<td>{{ choice }}</td>{{ endfor }}</tr>
+        <tr><td style="text-align:left">{{ form.rec4.label }}</td>{{ for choice in form.rec4 }}<td>{{ choice }}</td>{{ endfor }}</tr>
+        <tr><td style="text-align:left">{{ form.rec5.label }}</td>{{ for choice in form.rec5 }}<td>{{ choice }}</td>{{ endfor }}</tr>
+        <tr><td style="text-align:left">{{ form.rec6.label }}</td>{{ for choice in form.rec6 }}<td>{{ choice }}</td>{{ endfor }}</tr>
+    </table><br>
+
+    {{ next_button }}
+
+{{ endblock }}

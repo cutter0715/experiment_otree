@@ -1,0 +1,41 @@
+{{ block title }}
+    Round {{ player.round_number }}
+{{ endblock }}
+
+{{ block content }}
+
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+        
+        table {width: 100%; text-align: center;}
+        table tr, th {background-color: white;}
+        table tr:nth-child(odd) {background-color: #f2f2f2;}
+    </style>
+
+    <table style="border: 0px solid transparent;">
+        <col style="width:35%">
+        <col style="width:8%">
+        <col style="width:8%">
+        <col style="width:8%">
+        <col style="width:8%">
+        <col style="width:8%">
+        <col style="width:8%">
+        <col style="width:8%">
+        <tr><th></th><th>Not at all</th><th></th><th></th><th></th><th></th><th></th><th>Very Much</th></tr>
+        <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr>
+        <tr>
+            <td style="text-align:left"> 
+                How much do you trust the employee?
+            </td>
+            {{ for choice in form.trust }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+    </table><br>
+
+    {{ next_button }}
+
+{{ endblock }}

@@ -1,0 +1,153 @@
+{{ block title }}
+    Questionnaire
+{{ endblock }}
+
+{{ block content }}
+
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+        .mgslider-wrapper {
+            border-spacing: 10px;
+        }
+        .mgslider-limit {
+            width: 10%;
+            min-width: 75px;
+            height: 40px;
+            margin: 100px;
+            text-align: center;
+            background: #eee;
+            border: 1px solid #888;
+        }
+        .mgslider-limit, .mgslider-value {
+            font-variant-numeric: tabular-nums;
+        }
+        .mgslider-before {
+            height: 16px;
+            width: 100%;
+            background: #1e5bff;
+        }
+        .mgslider-feedback {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* format two divs side by side */
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .column {
+
+            margin-left: 0px;
+            margin-right: auto;
+            width: 50%;
+        }
+
+    </style>
+
+    <p>Click the blue bars to reveal the sliders.</p>
+
+    {{ form.peq4.label }}
+    <div class="row">
+        <div class="column" style="text-align: left;">
+            <p><i>
+                Not at all Responsible
+            </i></p>
+        </div>
+        <div class="column" style="text-align: right;">
+            <p><i>
+                Very responsible
+            </i></p>
+        </div>
+        <div id="slider_peq4"></div>
+    </div>
+
+    {{ form.peq5.label }}
+    <div class="row">
+        <div class="column" style="text-align: left;">
+            <p><i>
+                Not at all guilty
+            </i></p>
+        </div>
+        <div class="column" style="text-align: right;">
+            <p><i>
+                Very Guilty
+            </i></p>
+        </div>
+        <div id="slider_peq5"></div>
+    </div>
+
+    {{ form.peq6.label }}
+    <div class="row">
+        <div class="column" style="text-align: left;">
+            <p><i>
+                Not at all willing to take risks
+            </i></p>
+        </div>
+        <div class="column" style="text-align: right;">
+            <p><i>
+                Very willing to take risks
+            </i></p>
+        </div>
+        <div id="slider_peq6"></div>
+    </div>
+
+    {{ form.peq7.label }}
+    <div class="row">
+        <div class="column" style="text-align: left;">
+            <p><i>
+                Very hard
+            </i></p>
+        </div>
+        <div class="column" style="text-align: right;">
+            <p><i>
+                Very easy
+            </i></p>
+        </div>
+        <div id="slider_peq7"></div>
+    </div>
+
+    {{ form.peq8.label }}
+    <div class="row">
+        <div class="column" style="text-align: left;">
+            <p><i>
+                Not at all enjoyable
+            </i></p>
+        </div>
+        <div class="column" style="text-align: right;">
+            <p><i>
+                Extremely enjoyable
+            </i></p>
+        </div>
+        <div id="slider_peq8"></div>
+    </div>
+    
+    <script src="{{ static 'mgslider.js' }}"></script>
+
+    <script>
+        $(document).ready(function (event) {
+            slider1 = new mgslider("peq4", 0, 100, 1);
+            slider1.print(document.getElementById("slider_peq4"));
+
+            slider2 = new mgslider("peq5", 0, 100, 1);
+            slider2.print(document.getElementById("slider_peq5"));
+
+            slider3 = new mgslider("peq6", 0, 100, 1);
+            slider3.print(document.getElementById("slider_peq6"));
+
+            slider4 = new mgslider("peq7", 0, 100, 1);
+            slider4.print(document.getElementById("slider_peq7"));
+
+            slider5 = new mgslider("peq8", 0, 100, 1);
+            slider5.print(document.getElementById("slider_peq8"));
+        });
+    </script>
+
+    {{ next_button }}
+
+{{ endblock }}

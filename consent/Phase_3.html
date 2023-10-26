@@ -1,0 +1,236 @@
+{{ block title }}
+    Phase 3: Payoffs
+{{ endblock }}
+
+{{ block content }}
+
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        td, th {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #dddddd;
+        }
+
+        .equation {
+            text-indent: 50px;
+        }
+
+        .decision_screenshot {
+            border: 2px dashed lightgrey; 
+        }
+
+        .button {
+            background-color: #007bff;
+            color: white;
+            border-radius: 3px;
+            border: none;
+            padding: 5px 25px;
+            margin-bottom: 20px;
+        }
+        .button:hover {
+            background-color: white;
+            border: 1px solid #008CBA;
+            color: black;
+            border-radius: 3px;
+        }
+    </style>
+
+    {{ if session.choice_condition == True and session.capped_condition == False }}
+        <p style="text-align:center;">
+            <img src="{{ C.CHOICE_PHASES_LINK }}" alt = 'Study Timeline Phases' width='auto' height='230'/>
+        </p>
+        <p>
+            In Phase 3, both the firm and employee learn their payoffs for the round (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.PAYOFFS_LINK }}" alt = 'Study Steps' class='decision_screenshot' width='auto' height='80'/>
+        </p>
+        <p>
+            Note: during the six main rounds, “X” will be the payoff amount in Lira.
+        </p>
+        <p>
+            As stated previously, the firm’s payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Firm payoff = (120 × production level) - wage
+        </p>
+        <p>
+            The employee’s payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Employee payoff = wage - production cost
+        </p>
+        <p>
+            Remember, wage, production level, and production cost are defined as follows: 
+        </p>
+        {{ if session.fixed_contract_condition == True }}
+            <p>
+                Wage is an integer between 20 Lira and 120 Lira (inclusive). This wage is fixed, meaning, the employee will receive the wage regardless of the production level.
+            </p>
+        {{ else }}
+            <p>
+                Wage is an integer between 20 Lira and 120 Lira (inclusive). This wage depends on the production level, meaning, the employee will receive the wage according to the following: 
+            </p>
+            <p>
+                Wage =<ul><li>Agreed upon wage level if the production level is 1.0</li><li>15 if the production level is not 1.0</li></ul>
+            </p>
+        {{ endif }}
+        <p>
+            Production level is a number between 0.1 and 1.0 (inclusive).
+        </p>
+        <p>
+            Production cost corresponds to each production level as follows:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table><br>
+
+    {{ elif session.choice_condition == True and session.capped_condition == True }}
+        <p style="text-align:center;">
+            <img src="{{ C.CHOICE_CAPPED_PHASES_LINK }}" alt = 'Study Timeline Phases' width='auto' height='230'/>
+        </p>
+        <p>
+            In Phase 3, both the firm and employee learn their payoffs for the round (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.PAYOFFS_LINK }}" alt = 'Study Steps' class='decision_screenshot' width='auto' height='80'/>
+        </p>
+        <p>
+            Note: during the six main rounds, “X” will be the payoff amount in Lira.
+        </p>
+        <p>
+            As stated previously, the firm’s payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Firm payoff = (120 × production level) - wage
+        </p>
+        <p>
+            The employee’s payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Employee payoff = wage - production cost
+        </p>
+        <p>
+            Remember, wage, production level, and production cost are defined as follows: 
+        </p>
+        <p>
+            Wage is an integer between 20 Lira and 120 Lira (inclusive). This wage is fixed, meaning, the employee will receive the wage regardless of the production level.
+        </p>
+        <p>
+            Production level is a number between 0.1 and 1.0 (inclusive).
+        </p>
+        <p>
+            Production cost corresponds to each production level as follows:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table><br>
+
+    {{ elif session.choice_condition == False and session.session_employee_set == True}}
+        <p style="text-align:center;">
+            <img src="{{ C.NO_CHOICE_EMPLOYEE_SET_PHASES_LINK }}" alt = 'Study Timeline Phases' width='auto' height='170'/>
+        </p>
+        <p>
+            In Phase 3, both the firm and employee learn their payoffs for the round (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.PAYOFFS_LINK }}" alt = 'Learn Payoffs' class='decision_screenshot' width='auto' height='80'/>
+        </p>
+        <p>
+            Note: during the six main rounds, “X” will be the payoff amount in Lira.
+        </p>
+        <p>
+            As previously stated, the firm’s payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Firm payoff = (120 × production level) - wage
+        </p>
+        <p>
+            The employee’s payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Employee payoff = wage - production cost
+        </p>
+        <p>
+            Remember, wage, production level, and production cost are defined as follows:
+        </p>
+        <p>
+            Wage is an integer between 20 Lira and 120 Lira (inclusive). This wage is fixed, meaning, the employee will receive the wage regardless of the production level.
+        </p>
+        <p>
+            Production level is a number between 0.1 and 1.0 (inclusive).
+        </p>
+        <p>
+            Production cost corresponds to each production level as follows:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table><br>
+
+    {{ else }}
+        <p style="text-align:center;">
+            <img src="{{ C.NO_CHOICE_FIRM_SET_PHASES_LINK }}" alt = 'Study Timeline Phases' width='auto' height='180'/>
+        </p>
+        <p>
+            In Phase 3, both the firm and employee learn their payoffs for the round (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.PAYOFFS_LINK }}" alt = 'Learn Payoffs' class='decision_screenshot' width='auto' height='80'/>
+        </p>
+        <p>
+            Note: during the six main rounds, “X” will be the payoff amount in Lira.
+        </p>
+        <p>
+            As previously stated, the firm’s payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Firm payoff = (120 × production level) - wage
+        </p>
+        <p>
+            The employee’s payoff is calculated as follows:
+        </p>
+        <p class="equation">
+            Employee payoff = wage - production cost
+        </p>
+        <p>
+            Remember, wage, production level, and production cost are defined as follows:
+        </p>
+        <p>
+            Wage is an integer between 20 Lira and 120 Lira (inclusive). This wage is fixed, meaning, the employee will receive the wage regardless of the production level.
+        </p>
+        <p>
+            Production level is a number between 0.1 and 1.0 (inclusive).
+        </p>
+        <p>
+            Production cost corresponds to each productio nlevel as follows:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table><br>
+    {{ endif }}
+    <p>
+        You will now be shown a few example scenarios.
+    </p>
+    {{ next_button }}
+
+{{ endblock }}
+
+

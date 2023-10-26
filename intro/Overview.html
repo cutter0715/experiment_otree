@@ -1,0 +1,51 @@
+{{ block title }}
+Instruction
+{{ endblock }}
+
+{{ block content }}
+
+<p>
+    Thank you for participating in this study.
+</p>
+
+<h3>Overview</h3>
+
+<p>
+    Please look at the image below.
+    The table below will appear on your screen during the task.
+    Your task is to convert the given number to a letter by referring to the letter-number correspondence chart (upper halves).
+    Enter your answer and press "Return" key (or click "Submit" key), then the next card will be displayed.
+    Submit as many answers as possible within the time limit.
+</p>
+
+<p>
+    <img src="{{static 'decodingtask_sample.png'}}" alt="Error">
+</p>
+
+<p>
+    Following the image, The correct answer for this sample is "AB".
+    The numbers given are 2 or 4 digits.
+</p>
+
+<p>
+    One period of the task consists of two halves, the 1st and 2nd half.
+    Performance feedback is provided between the 1st and 2nd halves.
+</p>
+
+<p>
+
+<div style="padding: 10px; margin-bottom: 10px; border: 1px solid #333333; border-radius: 10px;color:red;background-color: #ffff99;">
+<h3>Attention!</h3>
+
+<ul>
+    <li> You can also submit your answer by clicking on it instead of pressing the "Return" key.</li>
+    <li> We do not distinguish upper/lower case (i.e, all of the following are correct; pfgom; PFGOM; Pfgom; pFgoM.) </li>
+    <li> The 2-minute practice period will begin on the next screen. </li>
+</ul>
+</div>
+
+{% next_button %}
+
+
+{{ endblock }}
+

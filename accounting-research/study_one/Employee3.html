@@ -1,0 +1,41 @@
+{{ block title }}
+    Round {{ player.round_number }}
+{{ endblock }}
+
+{{ block content }}
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        td, th {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #dddddd;
+        }
+    </style>
+
+    <p>
+        Given a wage of {{ group.wage }} Lira, the following payoffs are possible.
+    </p>
+    <table>
+        <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+        <tr><th>Firm Payoff</th><td>{{ f1 }}</td><td>{{ f2 }}</td><td>{{ f3 }}</td><td>{{ f4 }}</td><td>{{ f5 }}</td><td>{{ f6 }}</td><td>{{ f7 }}</td><td>{{ f8 }}</td><td>{{ f9 }}</td><td>{{ f10 }}</td></tr>
+        <tr><th>Employee Payoff</th><td>{{ e1 }}</td><td>{{ e2 }}</td><td>{{ e3 }}</td><td>{{ e4 }}</td><td>{{ e5 }}</td><td>{{ e6 }}</td><td>{{ e7 }}</td><td>{{ e8 }}</td><td>{{ e9 }}</td><td>{{ e10 }}</td></tr>
+    </table><br>
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+{{ endblock }}

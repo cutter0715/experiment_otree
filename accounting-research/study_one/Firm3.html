@@ -1,0 +1,131 @@
+{{ block title }}
+    Round {{ player.round_number }}
+{{ endblock }}
+
+{{ block content }}
+
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            border-radius: 3px;
+            border: none;
+            padding: 5px 25px;
+            margin-bottom: 20px;
+        }
+        .button:hover {
+            background-color: white;
+            border: 1px solid #008CBA;
+            color: black;
+            border-radius: 3px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        td, th {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #dddddd;
+        }
+    </style>
+
+    {{ if session.capped_condition == True and group.employee_set == True }}
+    
+        {{ formfield 'cap' label="Please set the employee's wage cap:" }}
+
+        <button type='button' class='button' onclick='send_cap()'>Calculate Payoffs</button>
+        
+    {{ else }}
+
+        {{ formfield 'wage' label="Please set the employee's wage:" }}
+
+        <button type='button' class='button' onclick='send_wage()'>Calculate Payoffs</button>
+
+    {{ endif }}
+
+
+
+    <table>
+        <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+        <tr><th>Firm Payoff</th><td id="f1"></td><td id="f2"></td><td id="f3"></td><td id="f4"></td><td id="f5"></td><td id="f6"></td><td id="f7"></td><td id="f8"></td><td id="f9"></td><td id="f10"></td></tr>
+        <tr><th>Employee Payoff</th><td id="e1"></td><td id="e2"></td><td id="e3"></td><td id="e4"></td><td id="e5"></td><td id="e6"></td><td id="e7"></td><td id="e8"></td><td id="e9"></td><td id="e10"></td></tr>
+    </table><br>
+
+    {{ next_button }}
+
+    <script>
+        // This makes it easier to refer to the users budget request input.
+        let input_wage = document.getElementById('id_wage'); 
+        let input_cap = document.getElementById('id_cap');
+
+        // Send input to otree to check input validity
+        function send_wage() {
+            liveSend(input_wage.value);
+        };
+        function send_cap() {
+            liveSend(input_cap.value);
+        };
+
+
+        // Receive information from oTree and display 
+        function liveRecv(data) {
+            if (data['type'] == 'error') {
+                document.getElementById('f1').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 0.1
+                document.getElementById('f2').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 0.2
+                document.getElementById('f3').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 0.3
+                document.getElementById('f4').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 0.4
+                document.getElementById('f5').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 0.5
+                document.getElementById('f6').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 0.6
+                document.getElementById('f7').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 0.7
+                document.getElementById('f8').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 0.8
+                document.getElementById('f9').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 0.9
+                document.getElementById('f10').innerHTML = ""; // Insert the Firm payoff for a given wage and production level of 1.0
+                document.getElementById('e1').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 0.1
+                document.getElementById('e2').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 0.2
+                document.getElementById('e3').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 0.3
+                document.getElementById('e4').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 0.4
+                document.getElementById('e5').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 0.5
+                document.getElementById('e6').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 0.6
+                document.getElementById('e7').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 0.7
+                document.getElementById('e8').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 0.8
+                document.getElementById('e9').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 0.9
+                document.getElementById('e10').innerHTML = ""; // Insert the Employee payoff for a given wage and production level of 1.0
+                alert(data['message']); // Display an error message to the participant, could be due to non-integer or out of range.
+            }
+            else if (data['type'] == 'possible_payoffs') {
+                document.getElementById('f1').innerHTML = data['f1']; // Insert the Firm payoff for a given wage and production level of 0.1
+                document.getElementById('f2').innerHTML = data['f2']; // Insert the Firm payoff for a given wage and production level of 0.2
+                document.getElementById('f3').innerHTML = data['f3']; // Insert the Firm payoff for a given wage and production level of 0.3
+                document.getElementById('f4').innerHTML = data['f4']; // Insert the Firm payoff for a given wage and production level of 0.4
+                document.getElementById('f5').innerHTML = data['f5']; // Insert the Firm payoff for a given wage and production level of 0.5
+                document.getElementById('f6').innerHTML = data['f6']; // Insert the Firm payoff for a given wage and production level of 0.6
+                document.getElementById('f7').innerHTML = data['f7']; // Insert the Firm payoff for a given wage and production level of 0.7
+                document.getElementById('f8').innerHTML = data['f8']; // Insert the Firm payoff for a given wage and production level of 0.8
+                document.getElementById('f9').innerHTML = data['f9']; // Insert the Firm payoff for a given wage and production level of 0.9
+                document.getElementById('f10').innerHTML = data['f10']; // Insert the Firm payoff for a given wage and production level of 1.0
+                document.getElementById('e1').innerHTML = data['e1']; // Insert the Employee payoff for a given wage and production level of 0.1
+                document.getElementById('e2').innerHTML = data['e2']; // Insert the Employee payoff for a given wage and production level of 0.2
+                document.getElementById('e3').innerHTML = data['e3']; // Insert the Employee payoff for a given wage and production level of 0.3
+                document.getElementById('e4').innerHTML = data['e4']; // Insert the Employee payoff for a given wage and production level of 0.4
+                document.getElementById('e5').innerHTML = data['e5']; // Insert the Employee payoff for a given wage and production level of 0.5
+                document.getElementById('e6').innerHTML = data['e6']; // Insert the Employee payoff for a given wage and production level of 0.6
+                document.getElementById('e7').innerHTML = data['e7']; // Insert the Employee payoff for a given wage and production level of 0.7
+                document.getElementById('e8').innerHTML = data['e8']; // Insert the Employee payoff for a given wage and production level of 0.8
+                document.getElementById('e9').innerHTML = data['e9']; // Insert the Employee payoff for a given wage and production level of 0.9
+                document.getElementById('e10').innerHTML = data['e10']; // Insert the Employee payoff for a given wage and production level of 1.0
+            }
+        };
+    </script>
+
+{{ endblock }}

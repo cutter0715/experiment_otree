@@ -1,0 +1,348 @@
+{{ block title }}
+    Phase 2: Employee
+{{ endblock }}
+
+{{ block content }}
+
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        td, th {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #dddddd;
+        }
+
+        .equation {
+            text-indent: 50px;
+        }
+
+        .decision_screenshot {
+            border: 2px dashed lightgrey; 
+        }
+
+        .button {
+            background-color: #007bff;
+            color: white;
+            border-radius: 3px;
+            border: none;
+            padding: 5px 25px;
+            margin-bottom: 20px;
+        }
+        .button:hover {
+            background-color: white;
+            border: 1px solid #008CBA;
+            color: black;
+            border-radius: 3px;
+        }
+    </style>
+
+    {{ if session.choice_condition == True and session.capped_condition == False }}
+
+        <p style="text-align:center;">
+            <img src="{{ C.CHOICE_PHASES_LINK }}" alt = 'Study Timeline Phases' width='auto' height='230'/>
+        </p>
+        <p>
+            In Phase 2, the employee decides whether to enter the labor market (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.F1_E1_LINK }}" alt = 'Employee Decision 1' class='decision_screenshot' width='auto' height='130'/>
+        </p>
+        <p>
+            If the employee decides to exit the labor market, then the labor market for that round ends and both the firm and the employee receive zero Lira for the round.
+        </p>
+        <p>
+            If the firm decides in Phase 1 to let the employee set the employee’s wage, then the employee sets their own wage (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E2_CHOICE_LINK }}" alt = 'Employee Decision 2' class='decision_screenshot' width='auto' height='160'/>
+        </p>
+        <p>
+            As noted earlier, the employee’s wage must be an integer between 20 Lira and 120 Lira (inclusive). That is, the employee’s wage must be in the range {20, 21, 22, …, 118, 119, 120}. 
+        </p>
+        {{ if session.fixed_contract_condition == True }}
+            <p>
+                This wage is fixed, meaning, the employee will receive the wage regardless of the production level.
+            </p>
+        {{ else }}
+            <p>
+                This wage depends on production level, meaning, the employee will receive the wage according to the following: 
+            </p>
+            <p>
+                Wage =<ul><li>Agreed upon wage level if the production level is 1.0</li><li>15 if the production level is not 1.0</li></ul>
+            </p>
+        {{ endif}}
+        <p>
+            A table of possible payoffs associated with the wage amount and any production level will be provided. Once a wage has been inserted, the employee may select “Calculate Payoffs”. The table cells will then populate with the associated payoffs for the firm and employee based on the inserted wage amount and any production level. For example, suppose a wage of 70 Lira was entered and the firm selected “Calculate Payoffs”, the table would populate with the following values (see table below).
+        </p>
+            {{ if session.fixed_contract_condition == True }}
+                <table>
+                    <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+                    <tr><th>Firm Payoff</th><td>-58</td><td>-46</td><td>-34</td><td>-22</td><td>-10</td><td>2</td><td>14</td><td>26</td><td>38</td><td>50</td></tr>
+                    <tr><th>Employee Payoff</th><td>70</td><td>69</td><td>68</td><td>66</td><td>64</td><td>62</td><td>60</td><td>58</td><td>55</td><td>52</td></tr>
+                </table><br>
+            {{ else }}
+                <table>
+                    <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+                    <tr><th>Firm Payoff</th><td>-3</td><td>9</td><td>21</td><td>33</td><td>45</td><td>57</td><td>69</td><td>81</td><td>93</td><td>50</td></tr>
+                    <tr><th>Employee Payoff</th><td>15</td><td>14</td><td>13</td><td>11</td><td>9</td><td>7</td><td>5</td><td>3</td><td>0</td><td>53</td></tr>
+                </table><br>
+            {{ endif }}
+        <p>
+            The employee may enter a new wage amount and click “Calculate Payoffs” as many times as they wish to observe payoffs for varying wage levels.
+        </p>
+        <p>
+            If, instead, the firm decides in Phase 1 to set the employee’s wage, then the employee is informed of the wage amount (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E2_CHOICE_ALTERNATE_LINK }}" alt = 'Employee Decision 2' class='decision_screenshot' width='auto' height='80'/>
+        </p>
+        <p>
+            Note: during the six main rounds, “X” will be the wage amount in Lira.
+        </p>
+        <p>
+            Next, the employee is shown a list of possible payoffs for both the firm and the employee associated with the wage amount that has been chosen by either the firm or employee and any production level. For example, suppose a wage of 70 Lira was chosen, the table would populate with the following values (see screenshot below).
+        </p>
+            {{ if session.fixed_contract_condition == True }}
+                <table>
+                    <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+                    <tr><th>Firm Payoff</th><td>-58</td><td>-46</td><td>-34</td><td>-22</td><td>-10</td><td>2</td><td>14</td><td>26</td><td>38</td><td>50</td></tr>
+                    <tr><th>Employee Payoff</th><td>70</td><td>69</td><td>68</td><td>66</td><td>64</td><td>62</td><td>60</td><td>58</td><td>55</td><td>52</td></tr>
+                </table><br>
+            {{ else }}
+                <table>
+                    <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+                    <tr><th>Firm Payoff</th><td>-3</td><td>9</td><td>21</td><td>33</td><td>45</td><td>57</td><td>69</td><td>81</td><td>93</td><td>50</td></tr>
+                    <tr><th>Employee Payoff</th><td>15</td><td>14</td><td>13</td><td>11</td><td>9</td><td>7</td><td>5</td><td>3</td><td>0</td><td>53</td></tr>
+                </table><br>
+            {{ endif }}
+        <p>
+            The employee then selects a production level (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E3_LINK }}" alt = 'Employee Decision 3' class='decision_screenshot' width='auto' height='120'/>
+        </p>
+        <p>
+            The production level is a number between 0.1 and 1.0 inclusive. That is, the production level must be in the range {0.1, 0.2, 0.3, …, 0.8, 0.9, 1.0}.
+        </p>
+        <p>
+            The production level generates production costs, and the employee incurs these costs. The following table shows the production costs (in Lira) for each production level:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table><br>
+        
+    {{ elif session.choice_condition == True and session.capped_condition == True }}
+
+        <p style="text-align:center;">
+            <img src="{{ C.CHOICE_CAPPED_PHASES_LINK }}" alt = 'Study Timeline Phases' width='auto' height='230'/>
+        </p>
+        <p>
+            In Phase 2, the employee decides whether to enter the labor market (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.F1_E1_LINK }}" alt = 'Employee Decision 1' class='decision_screenshot' width='auto' height='130'/>
+        </p>
+        <p>
+            If the employee decides to exit the labor market, then the labor market for that round ends and both the firm and the employee receive zero Lira for the round.
+        </p>
+        <p>
+            If the firm decides in Phase 1 to let the employee set the employee’s wage, then the employee sets their own wage (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E2_CAPPED_ALTERNATE_LINK }}" alt = 'Employee Decision 2' class='decision_screenshot' width='auto' height='220'/>
+        </p>
+        <p>
+            Note: during the six main rounds, "X" will be the wage cap in Lira.
+        </p>
+        <p>
+            As noted earlier, the employee’s wage must be an integer between 20 Lira and 120 Lira (inclusive). That is, the employee’s wage must be in the range {20, 21, 22, …, 118, 119, 120}. The firm may set a cap anywhere between 20 and 120 (inclusive). The employee will not be able to set their wage above the firm's cap amount. 
+        </p>
+        <p>
+            This wage is fixed, meaning, the employee will receive the wage regardless of the production level.
+        </p>
+        <p>
+            A table of possible payoffs associated with the wage amount and any production level will be provided. Once a wage has been inserted, the employee may select “Calculate Payoffs”. The table cells will then populate with the associated payoffs for the firm and employee based on the inserted wage amount and any production level. For example, suppose a wage of 70 Lira was entered and the firm selected “Calculate Payoffs”, the table would populate with the following values (see table below).
+        </p>
+        <table>
+            <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+            <tr><th>Firm Payoff</th><td>-58</td><td>-46</td><td>-34</td><td>-22</td><td>-10</td><td>2</td><td>14</td><td>26</td><td>38</td><td>50</td></tr>
+            <tr><th>Employee Payoff</th><td>70</td><td>69</td><td>68</td><td>66</td><td>64</td><td>62</td><td>60</td><td>58</td><td>55</td><td>52</td></tr>
+        </table><br>
+        <p>
+            The employee may enter a new wage amount and click “Calculate Payoffs” as many times as they wish to observe payoffs for varying wage levels.
+        </p>
+        <p>
+            If, instead, the firm decides in Phase 1 to set the employee’s wage, then the employee is informed of the wage amount (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E2_CHOICE_ALTERNATE_LINK }}" alt = 'Employee Decision 2' class='decision_screenshot' width='auto' height='80'/>
+        </p>
+        <p>
+            Note: during the six main rounds, “X” will be the wage amount in Lira.
+        </p>
+        <p>
+            Next, the employee is shown a list of possible payoffs for both the firm and the employee associated with the wage amount that has been chosen by either the firm or employee and any production level. For example, suppose a wage of 70 Lira was chosen, the table would populate with the following values (see screenshot below).
+        </p>
+        <table>
+            <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+            <tr><th>Firm Payoff</th><td>-58</td><td>-46</td><td>-34</td><td>-22</td><td>-10</td><td>2</td><td>14</td><td>26</td><td>38</td><td>50</td></tr>
+            <tr><th>Employee Payoff</th><td>70</td><td>69</td><td>68</td><td>66</td><td>64</td><td>62</td><td>60</td><td>58</td><td>55</td><td>52</td></tr>
+        </table><br>
+        <p>
+            The employee then selects a production level (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E3_LINK }}" alt = 'Employee Decision 3' class='decision_screenshot' width='auto' height='120'/>
+        </p>
+        <p>
+            The production level is a number between 0.1 and 1.0 inclusive. That is, the production level must be in the range {0.1, 0.2, 0.3, …, 0.8, 0.9, 1.0}.
+        </p>
+        <p>
+            The production level generates production costs, and the employee incurs these costs. The following table shows the production costs (in Lira) for each production level:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table><br>
+
+    {{ elif session.choice_condition == False and session.session_employee_set == True}}
+
+        <p style="text-align:center;">
+            <img src="{{ C.NO_CHOICE_EMPLOYEE_SET_PHASES_LINK }}" alt = 'Study Timeline Phases' width='auto' height='180'/>
+        </p>
+        <p>
+            In Phase 2, the employee decides whether to enter the labor market (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.F1_E1_LINK }}" alt = 'Employee Decision 1' class='decision_screenshot' width='auto' height='135'/>
+        </p>
+        <p>
+            If the employee decides to exit the labor market, then the labor market for that round ends and both the firm and the employee receive zero Lira for the round.
+        </p>
+        <p>
+            If the employee decides to enter the labor market, then the employee sets their own wage (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E2_NO_CHOICE_LINK }}" alt = 'Employee Decision 2' class='decision_screenshot' width='auto' height='120'/>
+        </p>
+        <p>
+            The employee’s wage must be an integer between 20 Lira and 120 Lira (inclusive). That is, the employee’s wage must be in the range {20, 21, 22, …, 118, 119, 120}. 
+        </p>
+        <p>
+            This wage is fixed, meaning, the employee will receive the wage regardless of the production level.
+        </p>
+        <p>
+            A table of possible payoffs associated with the wage amount and any production level will be provided. Once a wage has been inserted, the employee may select “Calculate Payoffs”. The table cells will then populate with the associated payoffs for the firm and employee based on the inserted wage amount and any production level. For example, suppose a wage of 70 Lira was entered and the employee selected “Calculate Payoffs”, the table would populate with the following values (see table below).
+        </p>
+        <table>
+            <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+            <tr><th>Firm Payoff</th><td>-58</td><td>-46</td><td>-34</td><td>-22</td><td>-10</td><td>2</td><td>14</td><td>26</td><td>38</td><td>50</td></tr>
+            <tr><th>Employee Payoff</th><td>70</td><td>69</td><td>68</td><td>66</td><td>64</td><td>62</td><td>60</td><td>58</td><td>55</td><td>52</td></tr>
+        </table><br>
+        <p>
+            The employee may enter a new wage amount and click “Calculate Payoffs” as many times as they wish to observe payoffs for varying wage levels.
+        </p>
+        <p>
+            Next, the employee is shown a list of possible payoffs for both the firm and the employee associated with the wage amount that has been chosen by the employee and any production level. For example, suppose a wage of 70 Lira was chosen, the table would populate with the following values (see screenshot below).
+        </p>
+        <table>
+            <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+            <tr><th>Firm Payoff</th><td>-58</td><td>-46</td><td>-34</td><td>-22</td><td>-10</td><td>2</td><td>14</td><td>26</td><td>38</td><td>50</td></tr>
+            <tr><th>Employee Payoff</th><td>70</td><td>69</td><td>68</td><td>66</td><td>64</td><td>62</td><td>60</td><td>58</td><td>55</td><td>52</td></tr>
+        </table><br>
+        <p>
+            The employee then selects a production level (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E3_LINK }}" alt = 'Employee Decision 3' class='decision_screenshot' width='auto' height='120'/>
+        </p>
+        <p>
+            The production level is a number between 0.1 and 1.0 inclusive. That is, the production level must be in the range {0.1, 0.2, 0.3, …, 0.8, 0.9, 1.0}.
+        </p>
+        <p>
+            The production level generates production costs, and the employee incurs these costs. The following table shows the production costs (in Lira) for each production level:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table><br>
+
+    {{ else }}
+
+        <p style="text-align:center;">
+            <img src="{{ C.NO_CHOICE_FIRM_SET_PHASES_LINK }}" alt = 'Study Timeline Phases' width='auto' height='170'/>
+        </p>
+        <p>
+            In Phase 2, the employee decides whether to enter the labor market (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.F1_E1_LINK }}" alt = 'Employee Decision 1' class='decision_screenshot' width='auto' height='135'/>
+        </p>
+        <p>
+            If the employee decides to exit the labor market, then the labor market for that round ends and both the firm and the employee receive zero Lira for the round.
+        </p>
+        <p>
+            If the employee decides to enter the labor market, then they are informed the wage amount the firm has chosen (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E2_CHOICE_ALTERNATE_LINK }}" alt = 'Employee Decision 2' class='decision_screenshot' width='auto' height='80'/>
+        </p>
+        <p>
+            Note: during the six main rounds, “X” will be the wage amount Lira.
+        </p>
+        <p>
+            The employee’s wage must be an integer between 20 Lira and 120 Lira (inclusive). That is, the employee’s wage must be in the range {20, 21, 22, …, 118, 119, 120}. 
+        </p>
+        <p>
+            This wage is fixed, meaning, the employee will receive the wage regardless of the production level.
+        </p>
+        <p>
+            Next, the employee is shown a list of possible payoffs for both the firm and the employee associated with the wage amount that has been chosen by the firm and any production level. For example, suppose a wage of 70 Lira was chosen, the table would populate with the following values (see screenshot below).
+        </p>
+        <table>
+            <tr><th>Production Level</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th><th>1.0</th></tr>
+            <tr><th>Firm Payoff</th><td>-58</td><td>-46</td><td>-34</td><td>-22</td><td>-10</td><td>2</td><td>14</td><td>26</td><td>38</td><td>50</td></tr>
+            <tr><th>Employee Payoff</th><td>70</td><td>69</td><td>68</td><td>66</td><td>64</td><td>62</td><td>60</td><td>58</td><td>55</td><td>52</td></tr>
+        </table><br>
+        <p>
+            The employee then selects a production level (see screenshot below).
+        </p>
+        <p style="text-align:center;">
+            <img src="{{ C.E3_LINK }}" alt = 'Employee Decision 3' class='decision_screenshot' width='auto' height='120'/>
+        </p>
+        <p>
+            The production level is a number between 0.1 and 1.0 inclusive. That is, the production level must be in the range {0.1, 0.2, 0.3, …, 0.8, 0.9, 1.0}.
+        </p>
+        <p>
+            The production level generates production costs, and the employee incurs these costs. The following table shows the production costs (in Lira) for each production level:
+        </p>
+        <table>
+            <tr><th>Production Level</th><td>0.1</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.5</td><td>0.6</td><td>0.7</td><td>0.8</td><td>0.9</td><td>1.0</td></tr>
+            <tr><th>Production Costs (Lira)</th><td>0</td><td>1</td><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>15</td><td>18</td></tr>
+        </table><br>
+
+    {{ endif }}
+
+    <p>
+        The employee may then select "Next" to proceed to Phase 3.
+    </p>
+
+    {{ next_button }}
+
+{{ endblock }}
+
+

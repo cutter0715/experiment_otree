@@ -1,0 +1,68 @@
+{{ block title }}
+    Labor Market Phases
+{{ endblock }}
+
+{{ block content }}
+    
+    <style>
+        .otree-btn-next {
+            float: right;
+            margin: 40px auto;
+        }
+        .equation {
+            text-indent: 50px;
+        }
+    </style>
+
+    <p>
+        At the start of each round, one firm will be matched with one employee. Each firm-employee match will interact with each other exactly once. So, if you assume the role of a firm, you will be matched with each employee exactly once. Likewise, if you assume the role of an employee, you will be matched with each firm exactly once.
+    </p>
+    <p>
+        Each round consists of phases in which either the firm or the employee makes decisions. These decisions relate to a wage amount and a production level, which will determine the payoff for both the firm and employee. 
+    </p>
+    <p>
+        The firm’s payoff is calculated as follows:
+    </p>
+    <p class="equation">
+        Firm payoff = (120 × production level) - wage
+    </p>
+    <p>
+        The employee’s payoff is calculated as follows:
+    </p>
+    <p class="equation">
+        Employee payoff = wage - production cost
+    </p>
+    <p>
+        Wage will be explained in Phase 1, production level and production cost will be explained in Phase 2.
+    </p>
+    <p>
+        The phases in each round proceed according to the diagram below: 
+    </p>
+    {{ if player.session.choice_condition == True }}
+        {{ if player.session.capped_condition == False }}
+            <p style="text-align:center;">
+                <img src="{{ C.CHOICE_PHASES_LINK }}" alt = 'Study Timeline' width='auto' height='230'/>
+            </p>
+        {{ else }}
+            <p>
+                <img src="{{ C.CHOICE_CAPPED_PHASES_LINK }}" alt='Study Timeline' width="auto" height='230'/>
+            </p>
+        {{ endif }}
+    {{ else }}
+        {{ if session.session_employee_set == True }}
+            <p style="text-align:center;">
+                <img src="{{ C.NO_CHOICE_EMPLOYEE_SET_PHASES_LINK }}" alt = 'Study Timeline' width="auto" height="170"/>
+            </p>
+        {{ else }}
+            <p style="text-align:center;">
+                <img src="{{ C.NO_CHOICE_FIRM_SET_PHASES_LINK }}" alt = 'Study Timeline' width="auto" height="170"/>
+            </p>
+        {{ endif }}
+    {{ endif }}
+    <p>
+        On the next few screens, you will receive additional information about each of these phases.
+    </p>
+
+    {{ next_button }}
+
+{{ endblock }}
