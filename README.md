@@ -38,4 +38,3 @@ For sliders:
 - `num_columns`: number of columns in grid
 
 More detailed adjustments are available via variables in files `task_something.py`
-# experiment_otree
