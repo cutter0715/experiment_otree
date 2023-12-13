@@ -1,10 +1,9 @@
 {{ block title }}Quiz{{ endblock }}
 
+
 {{ block content }}
-<p>
-    You will now complete a short quiz to check your understanding of the instructions.<br>
-    You must answer all questions correctly to proceed to the next page.
-</p>
+<p>You will now complete a short quiz to check your understanding of the instructions.<br>
+    You must answer all questions correctly to proceed to the next page.</p>
 
 <h4>
     Q1
@@ -26,11 +25,12 @@
 </h4>
 {{ formfield 'question4'}}
 
+{{ if player.informed == 1 }}
 <h4>
     Q5
 </h4>
 {{ formfield 'question5'}}
-
+{{endif}}
 
 {{ next_button }}
 

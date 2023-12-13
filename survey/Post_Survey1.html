@@ -1,38 +1,243 @@
 {{ block title }}Survey(1/2){{ endblock }}
 
-{{ block content }}
+{{ block styles }}
+    <style type="text/css">
+        .mypstyle{
+            font-weight: bold;
+        }
+    </style>
+{{ endblock }}
 
-    <p>
-        Please choose from -5(strongly disagree) to +5(strongly agree) how much you agree with the following statements.
-    </p>
+{{ block content  }}
 
-<table class="table table-striped">
-    <tr>
-        <th></th>
-        <th>-5</th>
+<p>Please answer how much you agree with the following statements.</p>
 
-        <th>-4</th>
-        <th>-3</th>
-        <th>-2</th>
-        <th>-1</th>
-        <th>0</th>
-        <th>+1</th>
-        <th>+2</th>
-        <th>+3</th>
-        <th>+4</th>
-        <th>+5</th>
-    </tr>
-    {{ for field in form }}
-    <tr>
-        <th>{{ field.label }}</th>
-        {{ for option in field }}
-        <td>{{ option }}</td>
-        {{ endfor }}
-    </tr>
-    {{ endfor }}
-</table>
+
+<div class="card-body">
+    <h5 class="card-title">1</h5>
+    <p class="card-text"><label for="id_justice1">Process used to determine incentive payouts applied consistently.</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="justice1" id="id_justice1-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_justice1-1">Strongly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice1" id="id_justice1-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_justice1-2">Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice1" id="id_justice1-3" autocomplete="off" value="3" required>
+        <label class="btn btn-outline-primary" for="id_justice1-3">Slightly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice1" id="id_justice1-4" autocomplete="off" value="4" required>
+        <label class="btn btn-outline-primary" for="id_justice1-4">Neutral</label>
+
+        <input type="radio" class="btn-check" name="justice1" id="id_justice1-5" autocomplete="off" value="5" required>
+        <label class="btn btn-outline-primary" for="id_justice1-5">Slightly Agree</label>
+
+        <input type="radio" class="btn-check" name="justice1" id="id_justice1-6" autocomplete="off" value="6" required>
+        <label class="btn btn-outline-primary" for="id_justice1-6">Agree</label>
+
+        <input type="radio" class="btn-check" name="justice1" id="id_justice1-7" autocomplete="off" value="7" required>
+        <label class="btn btn-outline-primary" for="id_justice1-7">Strongly Agree</label>
+
+    </div>
+
+</div>
+
+
+
+<div class="card-body">
+    <h5 class="card-title">2</h5>
+    <p class="card-text"><label for="id_justice2">Process used to determine incentive payout has been fair.</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="justice2" id="id_justice2-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_justice2-1">Strongly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice2" id="id_justice2-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_justice2-2">Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice2" id="id_justice2-3" autocomplete="off" value="3" required>
+        <label class="btn btn-outline-primary" for="id_justice2-3">Slightly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice2" id="id_justice2-4" autocomplete="off" value="4" required>
+        <label class="btn btn-outline-primary" for="id_justice2-4">Neutral</label>
+
+        <input type="radio" class="btn-check" name="justice2" id="id_justice2-5" autocomplete="off" value="5" required>
+        <label class="btn btn-outline-primary" for="id_justice2-5">Slightly Agree</label>
+
+        <input type="radio" class="btn-check" name="justice2" id="id_justice2-6" autocomplete="off" value="6" required>
+        <label class="btn btn-outline-primary" for="id_justice2-6">Agree</label>
+
+        <input type="radio" class="btn-check" name="justice2" id="id_justice2-7" autocomplete="off" value="7" required>
+        <label class="btn btn-outline-primary" for="id_justice2-7">Strongly Agree</label>
+
+    </div>
+
+</div>
+
+
+
+<div class="card-body">
+    <h5 class="card-title">3</h5>
+    <p class="card-text"><label for="id_justice3">Process used to determine incentive payout has been bias free.</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="justice3" id="id_justice3-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_justice3-1">Strongly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice3" id="id_justice3-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_justice3-2">Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice3" id="id_justice3-3" autocomplete="off" value="3" required>
+        <label class="btn btn-outline-primary" for="id_justice3-3">Slightly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice3" id="id_justice3-4" autocomplete="off" value="4" required>
+        <label class="btn btn-outline-primary" for="id_justice3-4">Neutral</label>
+
+        <input type="radio" class="btn-check" name="justice3" id="id_justice3-5" autocomplete="off" value="5" required>
+        <label class="btn btn-outline-primary" for="id_justice3-5">Slightly Agree</label>
+
+        <input type="radio" class="btn-check" name="justice3" id="id_justice3-6" autocomplete="off" value="6" required>
+        <label class="btn btn-outline-primary" for="id_justice3-6">Agree</label>
+
+        <input type="radio" class="btn-check" name="justice3" id="id_justice3-7" autocomplete="off" value="7" required>
+        <label class="btn btn-outline-primary" for="id_justice3-7">Strongly Agree</label>
+
+    </div>
+
+</div>
+
+
+
+<div class="card-body">
+    <h5 class="card-title">4</h5>
+    <p class="card-text"><label for="id_justice4">Amount of incentive payout received reflects effort I put into the task.</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="justice4" id="id_justice4-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_justice4-1">Strongly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice4" id="id_justice4-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_justice4-2">Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice4" id="id_justice4-3" autocomplete="off" value="3" required>
+        <label class="btn btn-outline-primary" for="id_justice4-3">Slightly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice4" id="id_justice4-4" autocomplete="off" value="4" required>
+        <label class="btn btn-outline-primary" for="id_justice4-4">Neutral</label>
+
+        <input type="radio" class="btn-check" name="justice4" id="id_justice4-5" autocomplete="off" value="5" required>
+        <label class="btn btn-outline-primary" for="id_justice4-5">Slightly Agree</label>
+
+        <input type="radio" class="btn-check" name="justice4" id="id_justice4-6" autocomplete="off" value="6" required>
+        <label class="btn btn-outline-primary" for="id_justice4-6">Agree</label>
+
+        <input type="radio" class="btn-check" name="justice4" id="id_justice4-7" autocomplete="off" value="7" required>
+        <label class="btn btn-outline-primary" for="id_justice4-7">Strongly Agree</label>
+
+    </div>
+
+</div>
+
+
+
+<div class="card-body">
+    <h5 class="card-title">5</h5>
+    <p class="card-text"><label for="id_justice5">Incentive payout is appropriate for effort I have put into the task.</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="justice5" id="id_justice5-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_justice5-1">Strongly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice5" id="id_justice5-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_justice5-2">Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice5" id="id_justice5-3" autocomplete="off" value="3" required>
+        <label class="btn btn-outline-primary" for="id_justice5-3">Slightly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice5" id="id_justice5-4" autocomplete="off" value="4" required>
+        <label class="btn btn-outline-primary" for="id_justice5-4">Neutral</label>
+
+        <input type="radio" class="btn-check" name="justice5" id="id_justice5-5" autocomplete="off" value="5" required>
+        <label class="btn btn-outline-primary" for="id_justice5-5">Slightly Agree</label>
+
+        <input type="radio" class="btn-check" name="justice5" id="id_justice5-6" autocomplete="off" value="6" required>
+        <label class="btn btn-outline-primary" for="id_justice5-6">Agree</label>
+
+        <input type="radio" class="btn-check" name="justice5" id="id_justice5-7" autocomplete="off" value="7" required>
+        <label class="btn btn-outline-primary" for="id_justice5-7">Strongly Agree</label>
+
+    </div>
+
+</div>
+
+
+
+<div class="card-body">
+    <h5 class="card-title">6</h5>
+    <p class="card-text"><label for="id_justice6">Most people will respond in kind when they are trusted by others.</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="justice6" id="id_justice6-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_justice6-1">Strongly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice6" id="id_justice6-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_justice6-2">Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice6" id="id_justice6-3" autocomplete="off" value="3" required>
+        <label class="btn btn-outline-primary" for="id_justice6-3">Slightly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice6" id="id_justice6-4" autocomplete="off" value="4" required>
+        <label class="btn btn-outline-primary" for="id_justice6-4">Neutral</label>
+
+        <input type="radio" class="btn-check" name="justice6" id="id_justice6-5" autocomplete="off" value="5" required>
+        <label class="btn btn-outline-primary" for="id_justice6-5">Slightly Agree</label>
+
+        <input type="radio" class="btn-check" name="justice6" id="id_justice6-6" autocomplete="off" value="6" required>
+        <label class="btn btn-outline-primary" for="id_justice6-6">Agree</label>
+
+        <input type="radio" class="btn-check" name="justice6" id="id_justice6-7" autocomplete="off" value="7" required>
+        <label class="btn btn-outline-primary" for="id_justice6-7">Strongly Agree</label>
+
+    </div>
+
+</div>
+
+<div class="card-body">
+    <h5 class="card-title">7</h5>
+    <p class="card-text"><label for="id_justice7">The amount of payout is justified given my performance at the task.</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="justice7" id="id_justice7-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_justice7-1">Strongly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice7" id="id_justice7-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_justice7-2">Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice7" id="id_justice7-3" autocomplete="off" value="3" required>
+        <label class="btn btn-outline-primary" for="id_justice7-3">Slightly Disagree</label>
+
+        <input type="radio" class="btn-check" name="justice7" id="id_justice7-4" autocomplete="off" value="4" required>
+        <label class="btn btn-outline-primary" for="id_justice7-4">Neutral</label>
+
+        <input type="radio" class="btn-check" name="justice7" id="id_justice7-5" autocomplete="off" value="5" required>
+        <label class="btn btn-outline-primary" for="id_justice7-5">Slightly Agree</label>
+
+        <input type="radio" class="btn-check" name="justice7" id="id_justice7-6" autocomplete="off" value="6" required>
+        <label class="btn btn-outline-primary" for="id_justice7-6">Agree</label>
+
+        <input type="radio" class="btn-check" name="justice7" id="id_justice7-7" autocomplete="off" value="7" required>
+        <label class="btn btn-outline-primary" for="id_justice7-7">Strongly Agree</label>
+
+    </div>
+
+</div>
 
 {{ next_button }}
 
-
 {{ endblock }}
+
+
+
+
+

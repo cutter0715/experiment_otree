@@ -1,0 +1,29 @@
+{{ block title }}
+Instruction (continued)
+{{ endblock }}
+
+{{ block content }}
+
+<p>
+
+    <li>Any period of the task consists of two halves, the 1st and 2nd half.</li>
+    <li>The first and second halves are one minute each, for a total of two minutes per period.</li>
+</p>
+<p>
+    <li> <b>You are given Mid-period feedback on your first half performance between the first and second halves.</b> </li>
+</p>
+
+{{ if player.informed == 1 }}
+<p>
+    Your targets may be adjusted at between the first and second half if a period the ratio of 4-digit to 2-digit is higher and your goals are too difficult to achieve.<br>
+    In that case, the standard for your compensation is not the initial target, but the adjusted target.
+    In other words, When the environment is very difficult to achieve the assigned target,
+</p>
+{{ endif }}
+
+
+
+{% next_button %}
+
+{{ endblock }}
+

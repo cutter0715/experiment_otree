@@ -11,7 +11,7 @@ Practice Period
     <h3>
         Iteration <span id="iter-txt"></span>
     </h3>
-    <p>Solved: <span id="solved-txt"></span>. Failed: <span id="failed-txt"></span>.</p>
+    <p>Solved: <span id="solved-txt"></span>.</p>
     <img class="captcha m-1" id="captcha-img">
 
     <div class="input-group m-1">
@@ -23,9 +23,11 @@ Practice Period
 
     <p class="warn" id="warning-txt"></p>
 
+    {{ if DEBUG }}
+    <button type="button" id="cheat-btn" class="btn btn-dark">Cheat</button>
+    {{ endif }}
+
 </div>
-<br>
-{{ include Constants.instructions_template }}
 
 {{ endblock }}
 

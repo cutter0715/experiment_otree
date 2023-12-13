@@ -69,7 +69,7 @@ def shuffle_groups_assign_trust(subsession):
     even_players = [2,4,6,8,10,12]
     for s in subsession.in_rounds(1, C.NUM_ROUNDS):
         round_num = 1
-        even_players = right_rotate(even_players, round_num)# Only the even players are rotated, then they are paired back with the odd players list.
+        even_players = right_rotate(even_players, round_num)   # Only the even players are rotated, then they are paired back with the odd players list.
         new_matrix = [[i, j] for i,j in zip(odd_players,even_players)]
         s.set_group_matrix(new_matrix)
         round_num += 1

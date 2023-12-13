@@ -10,31 +10,49 @@ Real-effort tasks. The different tasks are available in task_matrix.py, task_tra
 You can delete the ones you don't need. 
 """
 
+
 def get_task_module(player):
     """
     This function is only needed for demo mode, to demonstrate all the different versions.
     You can simplify it if you want.
     """
     from . import task_decoding
+    from . import task_decoding_2
 
     session = player.session
     task = session.config.get("task")
 
+    # iterationが奇数ならtask_decoding_1、偶数ならtask_decoding_2を返す
     if task == "decoding":
-        return task_decoding
+        if player.iteration % 2 == 1:
+            return task_decoding
+        else:
+            return task_decoding_2
 
-class Constants(BaseConstants):
-    name_in_url = "Practice"
-    players_per_group = None
-    num_rounds = 1
-    instructions_template = __name__ + "/instructions.html"
-    captcha_length = 3
+
+class C(BaseConstants):
+    NAME_IN_URL = "Practice"
+    PLAYERS_PER_GROUP = None
+    NUM_ROUNDS = 1
 
 class Subsession(BaseSubsession):
     pass
 
-
 def creating_session(subsession: Subsession):
+    import csv
+
+    f = open(__name__ + '/treatments.csv', encoding='utf-8-sig')
+
+    rows = list(csv.DictReader(f))
+    players = subsession.get_players()
+    for i in range(len(players)):
+        row = rows[i]
+        player = players[i]
+        # CSV contains all data in string form, so we need to convert
+        # to the correct data type, e.g. '1' -> 1 -> True.
+        player.adjustment = bool(int(row['adjustment']))
+        player.informed = bool(int(row['informed']))
+        player.exp_order = bool(int(row['exp_order']))
     session = subsession.session
     defaults = dict(
         retry_delay=1.0, puzzle_delay=1.0, attempts_per_puzzle=1, max_iterations=None
@@ -49,57 +67,42 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    prolific_id = models.StringField(
+    label = 'Your Prolific ID'
+    )
+    adjustment = models.BooleanField()
+    informed = models.BooleanField()
+    exp_order = models.BooleanField()
     iteration = models.IntegerField(initial=0)
     num_trials = models.IntegerField(initial=0)
     num_correct = models.IntegerField(initial=0)
     num_failed = models.IntegerField(initial=0)
-
-    age = models.IntegerField(label='What is your age?', min=13, max=125)
-    gender = models.StringField(
-        choices=[['Male', 'Male'], ['Female', 'Female']],
-        label='What is your gender?',
-        widget=widgets.RadioSelect,
-    )
-    crt_bat = models.IntegerField(
-        label='''
-        A bat and a ball cost 22 dollars in total.
-        The bat costs 20 dollars more than the ball.
-        How many dollars does the ball cost?'''
-    )
-    crt_widget = models.IntegerField(
-        label='''
-        If it takes 5 machines 5 minutes to make 5 widgets,
-        how many minutes would it take 100 machines to make 100 widgets?
-        '''
-    )
-    crt_lake = models.IntegerField(
-        label='''
-        In a lake, there is a patch of lily pads.
-        Every day, the patch doubles in size.
-        If it takes 48 days for the patch to cover the entire lake,
-        how many days would it take for the patch to cover half of the lake?
-        '''
-    )
     question1 = models.BooleanField(
-        label = "Is the ratio of 2-digit to 4-digit numbers the same for any period?",
+        label="Your task is decoding as many numbers as possible into alphabets within a time limit.",  # True
         choices=[[1, "True"], [0, "False"]],
     )
     question2 = models.BooleanField(
-        label = "Do you receive a bonus if you meet your goals for each period?",
+        label="You receive a bonus when you achieve your assigned target.",  # True
         choices=[[1, "True"], [0, "False"]],
     )
     question3 = models.BooleanField(
-        label="Do you receive a bonus if you meet your goals for each period?",
+        label="Your reward do not increase any further if you exceed your assigned target.",  # False
         choices=[[1, "True"], [0, "False"]],
     )
     question4 = models.BooleanField(
-        label="Do you receive a bonus if you meet your goals for each period?",
+        label="Mid-term feedback is given in the middle of each period.",
         choices=[[1, "True"], [0, "False"]],
     )
-    question5 = models.BooleanField(
-        label="Do you receive a bonus if you meet your goals for each period?",
-        choices=[[1, "True"], [0, "False"]],
+    question5 = models.IntegerField(
+        label='An assigned target may be adjusted ...',
+        choices=[[1, 'When the gap between the target and performance is large'],
+                 [2, 'When the environment is very difficult to achieve the target'],
+                 [3, 'Randomly']],
+        widget=widgets.RadioSelect,
+        blank=True,
+        null=True,
     )
+
 
 # puzzle-specific stuff
 
@@ -119,11 +122,8 @@ class Puzzle(ExtraModel):
     response_timestamp = models.FloatField()
     is_correct = models.BooleanField()
 
-
-
-
-
 ### functions ###
+
 def generate_puzzle(player: Player) -> Puzzle:
     """Create new puzzle for a player"""
     task_module = get_task_module(player)
@@ -277,7 +277,8 @@ def play_game(player: Player, message: dict):
     raise RuntimeError("unrecognized message from client")
 
 class Consent(Page):
-    pass
+    form_model = "player"
+    form_fields = ["prolific_id"]
 
 class Overview(Page):
     pass
@@ -286,7 +287,7 @@ class Ready(Page):
     pass
 
 class Practice(Page):
-    timeout_seconds = 1
+    timeout_seconds = 60
 
     live_method = play_game
 
@@ -309,32 +310,45 @@ class Practice(Page):
 class P_Results(Page):
     pass
 
-class Adjustment(Page):
-    pass
+class Adjustment_Instruction(Page):
+   pass
+
+class Quiz(Page):
+    form_model = "player"
+    form_fields = ['question1', 'question2', 'question3', 'question4', 'question5']
+
+    @staticmethod
+    def error_message(player, values):
+        if player.informed == 0:
+            solutions0 = dict(
+                question1=True,
+                question2=True,
+                question3=False,
+                question4=True,
+                question5=None
+            )
+            error_messages = dict()
+            for field_name in solutions0:
+                if values[field_name] != solutions0[field_name]:
+                    error_messages[field_name] = 'Your answer is incorrect'
+
+            return error_messages
+
+        if player.informed == 1:
+            solutions1 = dict(
+                question1=True,
+                question2=True,
+                question3=False,
+                question4=True,
+                question5=True
+            )
+            error_messages = dict()
+            for field_name in solutions1:
+                if values[field_name] != solutions1[field_name]:
+                    error_messages[field_name] = 'Your answer is incorrect'
+
+            return error_messages
 
 
-class Quiz1(Page):
-        form_model = 'player'
-        form_fields = ['question1', 'question2', 'question3', 'question4', 'question5']
+page_sequence = [Consent, Overview, Ready, Practice, P_Results, Adjustment_Instruction, Quiz]
 
-        def question1_error_message(player, question1):
-            if question1 != True:
-                return "This answer is not correct. Please read through the questions and answers carefully and try again."
-
-        def question2_error_message(player, question2):
-            if question2 != True:
-                return "This answer is not correct. Please read through the questions and answers carefully and try again."
-
-        def question3_error_message(player, question3):
-            if question3 != True:
-                return "This answer is not correct. Please read through the questions and answers carefully and try again."
-
-        def question4_error_message(player, question4):
-            if question4 != True:
-                return "This answer is not correct. Please read through the questions and answers carefully and try again."
-
-        def question5_error_message(player, question5):
-            if question5 != True:
-                return "This answer is not correct. Please read through the questions and answers carefully and try again."
-
-page_sequence = [Consent, Overview, Ready, Practice, P_Results, Adjustment, Quiz1]

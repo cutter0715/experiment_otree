@@ -9,3 +9,426 @@
 {{ formfield 'comp1' label="The employee’s wage depends on the chosen production level."}}
 {{ endif }}
 '''
+
+@staticmethod
+    def vars_for_template(player: Player):
+        if player.adjustment == 0:
+            if player.session.num.correct >= 5:   # Fixed Contract or Output Contract where an production level of 1 is provided
+                player.payoff = 1.80 + (player.num_correct - 5) * 0.1
+            else:  # Output Contract where an production level less than 1 is provided
+                player.payoff = 0
+        elif player.adjustment == 1:  # Firm payoff calculation
+            if player.session.num.correct >= 1:   # Fixed Contract or Output Contract where an production level of 1 is provided
+                player.payoff = 1.80 + (player.num_correct - 5) * 0.1
+            else:  # Output Contract where an production level less than 1 is provided
+                player.payoff = 0
+
+
+
+    @staticmethod
+    def question1_error_message(player, question1):
+        if question1 != True:
+            return "This answer is not correct. Please read through the questions and answers carefully and try again."
+
+    def question2_error_message(player, question2):
+        if question2 != True:
+            return "This answer is not correct. Please read through the questions and answers carefully and try again."
+
+    def question3_error_message(player, question3):
+        if question3 != True:
+            return "This answer is not correct. Please read through the questions and answers carefully and try again."
+
+    def question4_error_message(player, question4):
+        if question4 != True:
+            return "This answer is not correct. Please read through the questions and answers carefully and try again."
+
+    def question5_error_message(player, question5):
+        if question5 != True:
+            return "This answer is not correct. Please read through the questions and answers carefully and try again."
+
+    class Check(Page):
+        template_name = __name__ + "/Quiz.html"
+        form_model = "player"
+        form_fields = [
+            "question1", "question2", "question3", "question4", "question5",
+        ]
+
+
+<p>
+    You will now complete a short quiz to check your understanding of the instructions.<br>
+    You must answer all questions correctly to proceed to the next page.
+</p>
+
+<h4>
+    Q1
+</h4>
+{{ formfield 'question1'}}
+
+<h4>
+    Q2
+</h4>
+{{ formfield 'question2'}}
+
+<h4>
+    Q3
+</h4>
+{{ formfield 'question3'}}
+
+<h4>
+    Q4
+</h4>
+{{ formfield 'question4'}}
+
+{{ if player.informed == 1 }}
+<h4>
+    Q5
+</h4>
+{{ formfield 'question5'}}
+
+    target_difficulty_1 = models.IntegerField(label="I will earn a bonus in this period.", choices=[1, 2, 3, 4, 5, 6, 7], widget=widgets.RadioSelect)
+    target_difficulty_2 = models.IntegerField(label="I will earn a bonus in this period.", choices=[1, 2, 3, 4, 5, 6, 7], widget=widgets.RadioSelect)
+    target_difficulty_3 = models.IntegerField(label="I will earn a bonus in this period.", choices=[1, 2, 3, 4, 5, 6, 7], widget=widgets.RadioSelect)
+    target_difficulty_4 = models.IntegerField(label="I will earn a bonus in this period.", choices=[1, 2, 3, 4, 5, 6, 7], widget=widgets.RadioSelect)
+
+question1 = models.BooleanField(
+        label = "Your task is decoding as many numbers as possible into alphabets within a time limit.",   # True
+        choices=[[1, "True"], [0, "False"]],
+    )
+    question2 = models.BooleanField(
+        label = "You receive a bonus when you achieve your assigned target.",   # True
+        choices=[[1, "True"], [0, "False"]],
+    )
+    question3 = models.BooleanField(
+        label="Your reward do not increase any further if you exceed your assigned target.",   # False
+        choices=[[1, "True"], [0, "False"]],
+    )
+    question4 = models.BooleanField(
+        label="Mid-term feedback is given in the middle of each period.",
+        choices=[[1, "True"], [0, "False"]],
+        min="1"
+    )
+    question5 = models.IntegerField(
+        label='Conditions under which the target may be adjusted are...',
+        choices=[[1, 'When the gap between your target and performance is large'],
+                 [2, 'When the difficulty of achieving your target is high'],
+                 [3, 'Randomly']],
+        widget=widgets.RadioSelect,
+        blank=True,
+        null=True,
+    )
+
+
+    instructions_template = __name__ + "/instructions.html"
+    captcha_length = 3
+
+
+#### survey #####
+
+from otree.api import *
+
+
+class C(BaseConstants):
+    NAME_IN_URL = 'survey'
+    PLAYERS_PER_GROUP = None
+    NUM_ROUNDS = 1
+
+    materials_justice = {
+        "field": models.IntegerField,
+        "opts": [
+            [1, "Strongly Disagree"],
+            [2, "Disagree"],
+            [3, "Slightly Disagree"],
+            [4, "Neutral"],
+            [5, "Slightly Agree"],
+            [6, "Agree"],
+            [7, "Strongly Agree"]
+        ],
+        "items": {
+            "justice1": "Process used to determine incentive payouts applied consistently.",
+            "justice2": "Process used to determine incentive payout has been fair.",
+            "justice3": "Process used to determine incentive payout has been bias free.",
+            "justice4": "Amount of incentive payout received reflects effort I put into the task.",
+            "justice5": "Incentive payout is appropriate for effort I have put into the task.",
+            "justice6": "Most people will respond in kind when they are trusted by others.",
+            "justice7": "The amount of payout is justified given my performance at the task."
+        }
+    }
+
+class Subsession(BaseSubsession):
+    pass
+
+def creating_session(subsession: Subsession):
+    import csv
+
+    f = open(__name__ + '/treatments.csv', encoding='utf-8-sig')
+
+    rows = list(csv.DictReader(f))
+    players = subsession.get_players()
+    for i in range(len(players)):
+        row = rows[i]
+        player = players[i]
+        # CSV contains all data in string form, so we need to convert
+        # to the correct data type, e.g. '1' -> 1 -> True.
+        player.adjustment = bool(int(row['adjustment']))
+        player.informed = bool(int(row['informed']))
+    session = subsession.session
+    defaults = dict(
+        retry_delay=1.0, puzzle_delay=1.0, attempts_per_puzzle=1, max_iterations=None
+    )
+    session.params = {}
+    for param in defaults:
+        session.params[param] = session.config.get(param, defaults[param])
+
+class Group(BaseGroup):
+    pass
+
+
+class Player(BasePlayer):
+    age = models.IntegerField(
+        label='What is your age (in years)?',
+        min=15, max=80
+    )
+    gender = models.IntegerField(
+        label='With which gender do you identify most?',
+        choices=[[1, 'Male'], [2, 'Female'], [3, 'Non-Binary'], [4, 'Prefer not to answer']],
+        widget=widgets.RadioSelect
+    )
+    education = models.IntegerField(
+        label='What is your highest level of education completed?',
+        choices=[[1, 'No high school degree or equivalent'],  [2, 'High school degree or equivalent'], [3, 'Some college'],  [4, 'Undergraduate degree'], [5, 'Graduate degree'],  [6, 'Prefer not to answer'], ],
+        widget=widgets.RadioSelect
+    )
+    work_experience = models.IntegerField(
+        label='How many years of full-time work experience do you have?',
+        min=0, max=80
+    )
+    language = models.IntegerField(
+        label='What is your native language?',
+        choices=[[1, 'English'], [2, 'Non-English']],
+        widget=widgets.RadioSelect
+    )
+
+for k, v in C.materials_justice["items"].items():
+    setattr(
+        Player,
+        k,
+        C.materials_justice["field"](
+            label=v,
+            choices=C.materials_justice["opts"],
+            widget=widgets.RadioSelectHorizontal
+        )
+    )
+
+for k, v in C.materials_justice["items"].items():
+    setattr(
+        Player,
+        k,
+        C.materials_justice["field"](
+            label=v,
+            choices=C.materials_justice["opts"],
+            widget=widgets.RadioSelectHorizontal
+        )
+    )
+
+# FUNCTIONS
+
+
+# PAGES
+class Post_Survey1(Page):
+    template_name = __name__ + "/Post_Survey1.html"
+    form_model = "player"
+    form_fields = [*C.materials_justice["items"].keys()]  ## とりあえず入力フォームの順番は固定のままにしておく．
+
+class Post_Survey2(Page):
+    template_name = __name__ + "/Post_Survey1.html"
+    form_model = "player"
+    form_fields = [*C.materials_demographic["items"].keys()]
+
+class End(Page):
+    pass
+
+page_sequence = [Post_Survey1, Post_Survey2, End]
+
+
+
+
+
+{{ block title }}Survey(2/2){{ endblock }}
+
+{{ block content }}
+
+    <p>
+        Please answer the following questions.
+    </p>
+
+<div class="card-body">
+    <h5 class="card-title">1</h5>
+    <p class="card-text"><label for="id_age">What is your age?</label></p>
+    <div class="radio-options">
+
+        <input type="text" name="age" id="id_age-1" placeholder="Please enter in years" required>
+
+        <input type="checkbox" name="age" id="id_age-2" onchange="toggleAnswerInput()" >
+        <label for="id_age-2">Prefer not to answer</label>
+
+
+        <script>
+        function toggleAnswerInput() {
+            var noAnswerCheckbox = document.getElementById('Prefer not to answer');
+
+            // 「回答しない」が選択された場合はテキスト入力を無効にする
+            answerInput.disabled = noAnswerCheckbox.checked;
+        }
+        </script>
+
+
+    </div>
+</div>
+
+<div class="card-body">
+    <h5 class="card-title">2</h5>
+    <p class="card-text"><label for="id_gender">With which gender do you identify most?</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="gender" id="id_gender-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_gender-1">Male</label>
+
+        <input type="radio" class="btn-check" name="gender" id="id_gender-2" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_gender-2">Female</label>
+
+        <input type="radio" class="btn-check" name="gender" id="id_gender-3" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_gender-3">Non-Binary</label>
+
+        <input type="radio" class="btn-check" name="gender" id="id_gender-4" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_gender-4">Prefer not to answer</label>
+
+    </div>
+
+</div>
+
+<div class="card-body">
+    <h5 class="card-title">3</h5>
+    <p class="card-text"><label for="id_education">What is your highest level of education completed?</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="education" id="id_education-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_education-1">No high school degree or equivalent</label>
+
+        <input type="radio" class="btn-check" name="education" id="id_education-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_education-2">High school degree or equivalent</label>
+
+        <input type="radio" class="btn-check" name="education" id="id_education-3" autocomplete="off" value="3" required>
+        <label class="btn btn-outline-primary" for="id_education-3">Some college</label>
+
+        <input type="radio" class="btn-check" name="education" id="id_education-4" autocomplete="off" value="4" required>
+        <label class="btn btn-outline-primary" for="id_education-4">Undergraduate degree</label>
+
+        <input type="radio" class="btn-check" name="education" id="id_education-5" autocomplete="off" value="5" required>
+        <label class="btn btn-outline-primary" for="id_education-5">Graduate degree</label>
+
+        <input type="radio" class="btn-check" name="education" id="id_education-6" autocomplete="off" value="6" required>
+        <label class="btn btn-outline-primary" for="id_education-6">Prefer not to answer</label>
+
+    </div>
+
+</div>
+
+<div class="card-body">
+    <h5 class="card-title">4</h5>
+    <p class="card-text"><label for="id_work_experience">How many years of full-time work experience do you have?</label></p>
+    <div class="btn-group">
+
+        <input type="text" name="work_experience" id="id_work_experience-1" placeholder="Please enter in years" required>
+
+        <input type="checkbox" name="work_experience" id="id_work_experience-2" onchange="toggleAnswerInput()>
+        <label  for="id_work_experience-2">Prefer not to answer</label>
+
+        <script>
+        function toggleAnswerInput() {
+            var noAnswerCheckbox = document.getElementById('Prefer not to answer');
+
+            // 「回答しない」が選択された場合はテキスト入力を無効にする
+            answerInput.disabled = noAnswerCheckbox.checked;
+        }
+        </script>
+
+    </div>
+</div>
+
+<div class="card-body">
+    <h5 class="card-title">5</h5>
+    <p class="card-text"><label for="id_language">What is your native language</label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="language" id="id_language-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_language-1">English</label>
+
+        <input type="radio" class="btn-check" name="language" id="id_language-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_language-2">Non-English</label>
+
+    </div>
+</div>
+
+
+
+{{ next_button }}
+
+
+{{ endblock }}
+
+
+
+
+from . import task_decoding
+
+    session = player.session
+    task = session.config.get("task")
+    if task == "decoding":
+        return task_decoding
+
+
+class Player(BasePlayer):
+    prolific_id = models.StringField(
+    label = 'Your Prolific ID'
+    )
+    adjustment = models.BooleanField()
+    informed = models.BooleanField()
+    exp_order = models.BooleanField()
+    iteration = models.IntegerField(initial=0)
+    num_trials = models.IntegerField(initial=0)
+    num_correct = models.IntegerField(initial=0)
+    num_failed = models.IntegerField(initial=0)
+    question1 = models.BooleanField(
+        label="Your task is decoding as many numbers as possible into alphabets within a time limit.",  # True
+        choices=[[1, "True"], [0, "False"]],
+    )
+    question2 = models.BooleanField(
+        label="You receive a bonus when you achieve your assigned target.",  # True
+        choices=[[1, "True"], [0, "False"]],
+    )
+    question3 = models.BooleanField(
+        label="Your reward do not increase any further if you exceed your assigned target.",  # False
+        choices=[[1, "True"], [0, "False"]],
+    )
+    question4 = models.BooleanField(
+        label="Mid-term feedback is given in the middle of each period.",
+        choices=[[1, "True"], [0, "False"]],
+    )
+    question5 = models.IntegerField(
+        label='An assigned target may be adjusted ...',
+        choices=[[1, 'When the gap between the target and performance is large'],
+                 [2, 'When the environment is very difficult to achieve the target'],
+                 [3, 'Randomly']],
+        widget=widgets.RadioSelect,
+
+    )
+
+データベース一覧
+   名前    |      所有者      | エンコーディング | ロケールプロバイダー | 照合順序 | Ctype(変換演算子) | ICUロケール | ICUルール: |             アクセス権限
+-----------+------------------+------------------+----------------------+----------+-------------------+-------------+------------+---------------------------------------
+ mydb      | ryotasmacbookpro | UTF8             | libc                 | C        | C                 |             |            |
+ postgres  | ryotasmacbookpro | UTF8             | libc                 | C        | C                 |             |            |
+ template0 | ryotasmacbookpro | UTF8             | libc                 | C        | C                 |             |            | =c/ryotasmacbookpro                  +
+           |                  |                  |                      |          |                   |             |            | ryotasmacbookpro=CTc/ryotasmacbookpro
+ template1 | ryotasmacbookpro | UTF8             | libc                 | C        | C                 |             |            | =c/ryotasmacbookpro                  +
+           |                  |                  |                      |          |                   |             |            | ryotasmacbookpro=CTc/ryotasm:

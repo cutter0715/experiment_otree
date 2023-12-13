@@ -9,40 +9,162 @@ doc = """
 Real-effort tasks.
 """
 
-
-
-
 def get_task_module(player):
-    """
-    This function is only needed for demo mode, to demonstrate all the different versions.
-    You can simplify it if you want.
-    """
 
-    from . import task_matrix, task_transcription, task_decoding
+    from . import task_decoding
+    from . import task_decoding_2
 
     session = player.session
     task = session.config.get("task")
-    if task == "matrix":
-        return task_matrix
-    if task == "transcription":
-        return task_transcription
+
     if task == "decoding":
-        return task_decoding
-    # default
-    return task_matrix
+        if player.exp_order == 0:
+            if player.round_number == 1:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 2:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 3:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 4:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 5:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 6:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 7:
+                if player.iteration % 2 == 1:  # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 8:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 9:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 10:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 11:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 12:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+        if player.exp_order == 1:
+            if player.round_number == 1:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 2:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 3:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 4:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 5:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 6:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 7:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 8:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 9:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 10:
+                if player.iteration % 4 == 1:   # hard
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 11:
+                if player.iteration % 2 == 1:  # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
+            if player.round_number == 12:
+                if player.iteration % 2 == 1:   # normal
+                    return task_decoding
+                else:
+                    return task_decoding_2
 
-class Constants(BaseConstants):
-    name_in_url = "main"
-    players_per_group = None
-    num_rounds = 1
 
-    instructions_template = __name__ + "/instructions.html"
-    captcha_length = 3
+class C(BaseConstants):
+    NAME_IN_URL = "main"
+    PLAYERS_PER_GROUP = None
+    NUM_ROUNDS = 12
 
 class Subsession(BaseSubsession):
     pass
 
 def creating_session(subsession: Subsession):
+    import csv
+
+    f = open(__name__ + '/treatments.csv', encoding='utf-8-sig')
+
+    rows = list(csv.DictReader(f))
+    players = subsession.get_players()
+    for i in range(len(players)):
+        row = rows[i]
+        player = players[i]
+        # CSV contains all data in string form, so we need to convert
+        # to the correct data type, e.g. '1' -> 1 -> True.
+        player.adjustment = bool(int(row['adjustment']))
+        player.informed = bool(int(row['informed']))
+        player.exp_order = bool(int(row['exp_order']))
     session = subsession.session
     defaults = dict(
         retry_delay=1.0, puzzle_delay=1.0, attempts_per_puzzle=1, max_iterations=None
@@ -51,38 +173,31 @@ def creating_session(subsession: Subsession):
     for param in defaults:
         session.params[param] = session.config.get(param, defaults[param])
 
-
 class Group(BaseGroup):
     pass
 
-
 class Player(BasePlayer):
+    current_page = models.IntegerField(initial=0)
+    adjustment = models.BooleanField()
+    informed = models.BooleanField()
+    exp_order = models.BooleanField()
     iteration = models.IntegerField(initial=0)
     num_trials = models.IntegerField(initial=0)
     num_correct = models.IntegerField(initial=0)
+    num_correct_half1 = models.IntegerField(initial=0)
+    num_correct_half2 = models.IntegerField(initial=0)
     num_failed = models.IntegerField(initial=0)
-    age = models.IntegerField(label='What is your age?', min=13, max=125)
-    gender = models.StringField(
-        choices=[['Male', 'Male'], ['Female', 'Female']],
-        label='What is your gender?',
-        widget=widgets.RadioSelect,
-    )
+    beginning_target = models.IntegerField(initial=12)
+    adjusted_target = models.IntegerField(initial=8)
+    target_difficulty_1 = models.IntegerField(label="I will earn a bonus in this period.",
+                                              choices=[1, 2, 3, 4, 5, 6, 7], widget=widgets.RadioSelect)
+    target_difficulty_2 = models.IntegerField(label="I will earn a bonus in this period.",
+                                              choices=[1, 2, 3, 4, 5, 6, 7], widget=widgets.RadioSelect)
+    target_difficulty_3 = models.IntegerField(label="I will earn a bonus in this period.",
+                                              choices=[1, 2, 3, 4, 5, 6, 7], widget=widgets.RadioSelect)
+    target_difficulty_4 = models.IntegerField(label="I will earn a bonus in this period.",
+                                              choices=[1, 2, 3, 4, 5, 6, 7], widget=widgets.RadioSelect)
 
-    target_difficulty_1 = models.IntegerField(
-        label="How difficult do you think it will be to achieve your target?", choices=[1, 2, 3, 4, 5], widget=widgets.RadioSelect
-    )
-
-    target_difficulty_2 = models.IntegerField(
-        label="How difficult do you think it is to achieve your target?", choices=[1, 2, 3, 4, 5], widget=widgets.RadioSelect
-    )
-
-    target_difficulty_3 = models.IntegerField(
-        label="How difficult do you think it is be to achieve your target?", choices=[1, 2, 3, 4, 5], widget=widgets.RadioSelect
-    )
-
-    target_difficulty_4 = models.IntegerField(
-        label="How difficult do you think it was to achieve your target?", choices=[1, 2, 3, 4, 5], widget=widgets.RadioSelect
-    )
 
 # puzzle-specific stuff
 
@@ -102,6 +217,7 @@ class Puzzle(ExtraModel):
     response_timestamp = models.FloatField()
     is_correct = models.BooleanField()
 
+### functions ###
 
 def generate_puzzle(player: Player) -> Puzzle:
     """Create new puzzle for a player"""
@@ -111,7 +227,6 @@ def generate_puzzle(player: Player) -> Puzzle:
     return Puzzle.create(
         player=player, iteration=player.iteration, timestamp=time.time(), **fields
     )
-
 
 def get_current_puzzle(player):
     puzzles = Puzzle.filter(player=player, iteration=player.iteration)
@@ -238,9 +353,10 @@ def play_game(player: Player, message: dict):
         # update player progress
         if current.is_correct:
             player.num_correct += 1
-        else:
-            player.num_failed += 1
-        player.num_trials += 1
+            if player.current_page == 1:  # Half1の場合
+                player.num_correct_half1 += 1
+            elif player.current_page == 2:  # Half2の場合
+                player.num_correct_half2 += 1
 
         retries_left = params["attempts_per_puzzle"] - current.attempts
         p = get_progress(player)
@@ -257,30 +373,35 @@ def play_game(player: Player, message: dict):
 
 
 class Survey_1(Page):
-    form_model = 'player'
-    form_fields = ['target_difficulty_1']
+    form_model = "player"
+    form_fields = ["target_difficulty_1"]
 
 class Survey_2(Page):
-    form_model = 'player'
-    form_fields = ['target_difficulty_2']
+    form_model = "player"
+    form_fields = ["target_difficulty_2"]
 
 class Survey_3(Page):
-    form_model = 'player'
-    form_fields = ['target_difficulty_3']
+    form_model = "player"
+    form_fields = ["target_difficulty_3"]
 
 class Survey_4(Page):
-    form_model = 'player'
-    form_fields = ['target_difficulty_4']
+    form_model = "player"
+    form_fields = ["target_difficulty_4"]
+
 
 class Target(Page):
     pass
 
+
 class Adjustment(Page):
     pass
 
-
 class Half1(Page):
-    timeout_seconds = 1
+    def before_next_page(self):
+        self.player.current_page = 1
+        z = generate_puzzle(self.player)
+
+    timeout_seconds = 60
 
     live_method = play_game
 
@@ -291,17 +412,26 @@ class Half1(Page):
     @staticmethod
     def vars_for_template(player: Player):
         task_module = get_task_module(player)
-        return dict(DEBUG=settings.DEBUG,
-                    input_type=task_module.INPUT_TYPE,
-                    placeholder=task_module.INPUT_HINT)
+        return dict(
+            DEBUG=settings.DEBUG,
+            input_type=task_module.INPUT_TYPE,
+            placeholder=task_module.INPUT_HINT,
+        )
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         if not timeout_happened and not player.session.params['max_iterations']:
             raise RuntimeError("malicious page submission")
+
+        # Half1の場合の処理
+        player.num_correct_half1 = player.num_correct  # フィールド名は適切なものに置き換える
+
 
 class Half2(Page):
-    timeout_seconds = 1
+    def before_next_page(self):
+        self.player.current_page = 2
+        z = generate_puzzle(self.player)
+    timeout_seconds = 60
 
     live_method = play_game
 
@@ -312,25 +442,36 @@ class Half2(Page):
     @staticmethod
     def vars_for_template(player: Player):
         task_module = get_task_module(player)
-        return dict(DEBUG=settings.DEBUG,
-                    input_type=task_module.INPUT_TYPE,
-                    placeholder=task_module.INPUT_HINT)
+        return dict(
+            DEBUG=settings.DEBUG,
+            input_type=task_module.INPUT_TYPE,
+            placeholder=task_module.INPUT_HINT,
+        )
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         if not timeout_happened and not player.session.params['max_iterations']:
             raise RuntimeError("malicious page submission")
 
+        # Half2の場合の処理
+        player.num_correct_half2 = player.num_correct - player.num_correct_half1
 
 class Results(Page):
     @staticmethod
-    def player_payoff(player: Player):
-        if player.num_correct >= 20:
-            player.payoff = 8.00 + 1.80 + player.num_correct * 0.05
-        else:
-            player.payoff = 8.00
+    def vars_for_template(player: Player):
+        if player.adjustment == 0:
+            if player.num_correct >= player.beginning_target:  # Fixed Contract or Output Contract where an production level of 1 is provided
+                player.payoff = 1.80 + (player.num_correct - player.beginning_target) * 0.1
+            else:  # Output Contract where an production level less than 1 is provided
+                player.payoff = 0
+        elif player.adjustment == 1:  # Firm payoff calculation
+            if player.num_correct >= player.adjusted_target:   # Fixed Contract or Output Contract where an production level of 1 is provided
+                player.payoff = 1.80 + (player.num_correct - player.adjusted_target) * 0.1
+            else:  # Output Contract where an production level less than 1 is provided
+                player.payoff = 0
 
 class Ready(Page):
     pass
 
 page_sequence = [Target, Survey_1, Ready, Half1, Survey_2, Adjustment, Survey_3, Ready, Half2, Survey_4, Results]
+

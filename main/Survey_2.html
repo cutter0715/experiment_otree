@@ -1,28 +1,50 @@
 {{ block title }}Survey 2 of Period {{ player.round_number }}{{ endblock }}
-{{ block content }}
 
+{{ block styles }}
+    <style type="text/css">
+        .mypstyle{
+            font-weight: bold;
+        }
+    </style>
+{{ endblock }}
+
+{{ block content  }}
     <p>
-        Please answer the following question.
+        Please answer how much you agree with the following statement.
     </p>
 
-<table class="table table-striped">
-    <tr>
-        <th></th>
-        <th>1(very easy)</th>
-        <th>2(slightly easy)</th>
-        <th>3(neither easy nor difficult)</th>
-        <th>4(slightly difficult)</th>
-        <th>5(very difficult)</th>
-    </tr>
-    {{ for field in form }}
-    <tr>
-        <th>{{ field.label }}</th>
-        {{ for option in field }}
-        <td>{{ option }}</td>
-        {{ endfor }}
-    </tr>
-    {{ endfor }}
-</table>
+
+<div class="card-body">
+    <h5 class="card-title"></h5>
+    <p class="card-text"><label for="id_target_difficulty_2"><b>I will earn a bonus in this period.</b></label></p>
+    <div class="btn-group">
+
+        <input type="radio" class="btn-check" name="target_difficulty_2" id="id_target_difficulty_2-1" autocomplete="off" value="1" required>
+        <label class="btn btn-outline-primary" for="id_target_difficulty_2-1">Strongly Disagree</label>
+
+        <input type="radio" class="btn-check" name="target_difficulty_2" id="id_target_difficulty_2-2" autocomplete="off" value="2" required>
+        <label class="btn btn-outline-primary" for="id_target_difficulty_2-2">Disagree</label>
+
+        <input type="radio" class="btn-check" name="target_difficulty_2" id="id_target_difficulty_2-3" autocomplete="off" value="3" required>
+        <label class="btn btn-outline-primary" for="id_target_difficulty_2-3">Slightly Disagree</label>
+
+        <input type="radio" class="btn-check" name="target_difficulty_2" id="id_target_difficulty_2-4" autocomplete="off" value="4" required>
+        <label class="btn btn-outline-primary" for="id_target_difficulty_2-4">Neutral</label>
+
+        <input type="radio" class="btn-check" name="target_difficulty_2" id="id_target_difficulty_2-5" autocomplete="off" value="5" required>
+        <label class="btn btn-outline-primary" for="id_target_difficulty_2-5">Slightly Agree</label>
+
+        <input type="radio" class="btn-check" name="target_difficulty_2" id="id_target_difficulty_2-6" autocomplete="off" value="6" required>
+        <label class="btn btn-outline-primary" for="id_target_difficulty_2-6">Agree</label>
+
+        <input type="radio" class="btn-check" name="target_difficulty_2" id="id_target_difficulty_2-7" autocomplete="off" value="7" required>
+        <label class="btn btn-outline-primary" for="id_target_difficulty_2-7">Strongly Agree</label>
+
+    </div>
+
+</div>
+
+<p></p>
 
 {{ next_button }}
 

@@ -10,64 +10,87 @@ class C(BaseConstants):
 class Subsession(BaseSubsession):
     pass
 
+def creating_session(subsession: Subsession):
+    import csv
+
+    f = open(__name__ + '/treatments.csv', encoding='utf-8-sig')
+
+    rows = list(csv.DictReader(f))
+    players = subsession.get_players()
+    for i in range(len(players)):
+        row = rows[i]
+        player = players[i]
+        # CSV contains all data in string form, so we need to convert
+        # to the correct data type, e.g. '1' -> 1 -> True.
+        player.adjustment = bool(int(row['adjustment']))
+        player.informed = bool(int(row['informed']))
+        player.exp_order = bool(int(row['exp_order']))
+    session = subsession.session
+    defaults = dict(
+        retry_delay=1.0, puzzle_delay=1.0, attempts_per_puzzle=1, max_iterations=None
+    )
+    session.params = {}
+    for param in defaults:
+        session.params[param] = session.config.get(param, defaults[param])
 
 class Group(BaseGroup):
     pass
 
 
 class Player(BasePlayer):
-
-
+    adjustment = models.BooleanField()
+    informed = models.BooleanField()
+    exp_order = models.BooleanField()
     justice1 = models.IntegerField(
-        label="Process used to determine incentive payouts applied consistently.",
-        choices=[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
-        widget=widgets.RadioSelect,
+        label='Process used to determine incentive payouts applied consistently',
+        choices=[1, 2, 3, 4, 5, 6, 7],
+        widget=widgets.RadioSelect
     )
     justice2 = models.IntegerField(
-        label="Process used to determine incentive payout has been fair.",
-        choices=[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
-        widget = widgets.RadioSelect,
+        label='Process used to determine incentive payout has been fair.',
+        choices=[1, 2, 3, 4, 5, 6, 7],
+        widget=widgets.RadioSelect
     )
     justice3 = models.IntegerField(
-        label="Process used to determine incentive payout has been bias free.",
-        choices=[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
-        widget = widgets.RadioSelect,
+        label='Process used to determine incentive payout has been bias free.',
+        choices=[1, 2, 3, 4, 5, 6, 7],
+        widget=widgets.RadioSelect
     )
     justice4 = models.IntegerField(
-        label="Amount of incentive payout received reflects effort I put into the task.",
-        choices=[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
-        widget = widgets.RadioSelect,
+        label='Amount of incentive payout received reflects effort I put into the task.',
+        choices=[1, 2, 3, 4, 5, 6, 7],
+        widget=widgets.RadioSelect
     )
     justice5 = models.IntegerField(
-        label="Incentive payout is appropriate for effort I have put into the task.",
-        choices=[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
-        widget = widgets.RadioSelect,
+        label='Incentive payout is appropriate for effort I have put into the task.',
+        choices=[1, 2, 3, 4, 5, 6, 7],
+        widget=widgets.RadioSelect
     )
     justice6 = models.IntegerField(
-        label="The amount of incentive payout reflects my contribution to the task.",
-        choices=[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
-        widget = widgets.RadioSelect,
+        label='Most people will respond in kind when they are trusted by others.',
+        choices=[1, 2, 3, 4, 5, 6, 7],
+        widget=widgets.RadioSelect
     )
     justice7 = models.IntegerField(
-        label="The amount of payout is justified given my performance at the task.",
-        choices=[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
-        widget = widgets.RadioSelect,
+        label='The amount of payout is justified given my performance at the task.',
+        choices=[1, 2, 3, 4, 5, 6, 7],
+        widget=widgets.RadioSelect
     )
     age = models.IntegerField(
-        label='What is your age (in years)?'
+        label='What is your age? (If you do not want to answer this question, you can leave it blank.)',
+        min=15, max=80,
+        blank = True,
+        null = True
     )
     gender = models.IntegerField(
         label='With which gender do you identify most?',
         choices=[[1, 'Male'], [2, 'Female'], [3, 'Non-Binary'], [4, 'Prefer not to answer']],
         widget=widgets.RadioSelect
     )
-    education = models.IntegerField(
-        label='What is your highest level of education completed?',
-        choices=[[1, 'No high school degree or equivalent'],  [2, 'High school degree or equivalent'], [3, 'Some college'],  [4, 'Undergraduate degree'], [5, 'Graduate degree'],  [6, 'Prefer not to answer'], ],
+    language = models.IntegerField(
+        label='What is your native language?',
+        choices=[[1, 'English'], [2, 'Non-English']],
         widget=widgets.RadioSelect
-    )
-    work_experience = models.IntegerField(
-        label='How many years of full-time work experience do you have?'
     )
 
 
@@ -76,12 +99,12 @@ class Player(BasePlayer):
 
 # PAGES
 class Post_Survey1(Page):
-    form_model = 'player'
-    form_fields = ['justice1', 'justice2', 'justice3', 'justice4', 'justice5', 'justice6', 'justice7']
+    form_model = "player"
+    form_fields = ["justice1", "justice2", "justice3", "justice4", "justice5", "justice6", "justice7"]  ## とりあえず入力フォームの順番は固定のままにしておく．
 
 class Post_Survey2(Page):
-    form_model = 'player'
-    form_fields = ['age', 'gender', 'education', 'work_experience']
+    form_model = "player"
+    form_fields = ["age", "gender",  "language"]
 
 class End(Page):
     pass
