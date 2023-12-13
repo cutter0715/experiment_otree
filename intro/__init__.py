@@ -284,7 +284,7 @@ class Overview(Page):
     pass
 
 class Ready(Page):
-    pass
+    timeout_seconds = 5
 
 class Practice(Page):
     timeout_seconds = 60
@@ -310,7 +310,7 @@ class Practice(Page):
 class P_Results(Page):
     pass
 
-class Adjustment_Instruction(Page):
+class Instruction_2(Page):
    pass
 
 class Quiz(Page):
@@ -340,7 +340,7 @@ class Quiz(Page):
                 question2=True,
                 question3=False,
                 question4=True,
-                question5=True
+                question5=2
             )
             error_messages = dict()
             for field_name in solutions1:
@@ -350,5 +350,5 @@ class Quiz(Page):
             return error_messages
 
 
-page_sequence = [Consent, Overview, Ready, Practice, P_Results, Adjustment_Instruction, Quiz]
+page_sequence = [Consent, Overview, Ready, Practice, P_Results, Instruction_2, Quiz]
 

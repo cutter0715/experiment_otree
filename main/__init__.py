@@ -393,7 +393,7 @@ class Target(Page):
     pass
 
 
-class Adjustment(Page):
+class Feedback(Page):
     pass
 
 class Half1(Page):
@@ -465,13 +465,19 @@ class Results(Page):
             else:  # Output Contract where an production level less than 1 is provided
                 player.payoff = 0
         elif player.adjustment == 1:  # Firm payoff calculation
-            if player.num_correct >= player.adjusted_target:   # Fixed Contract or Output Contract where an production level of 1 is provided
-                player.payoff = 1.80 + (player.num_correct - player.adjusted_target) * 0.1
-            else:  # Output Contract where an production level less than 1 is provided
-                player.payoff = 0
+            if player.iteration % 4 == 1:
+                if player.num_correct >= player.adjusted_target:   # Fixed Contract or Output Contract where an production level of 1 is provided
+                    player.payoff = 1.80 + (player.num_correct - player.adjusted_target) * 0.1
+                else:  # Output Contract where an production level less than 1 is provided
+                    player.payoff = 0
+            if player.iteration % 2 == 1:
+                if player.num_correct >= player.beginning_target:  # Fixed Contract or Output Contract where an production level of 1 is provided
+                    player.payoff = 1.80 + (player.num_correct - player.beginning_target) * 0.1
+                else:  # Output Contract where an production level less than 1 is provided
+                    player.payoff = 0
 
 class Ready(Page):
-    pass
+    timeout_seconds = 5
 
-page_sequence = [Target, Survey_1, Ready, Half1, Survey_2, Adjustment, Survey_3, Ready, Half2, Survey_4, Results]
+page_sequence = [Target, Survey_1, Ready, Half1, Survey_2, Feedback, Survey_3, Ready, Half2, Survey_4, Results]
 

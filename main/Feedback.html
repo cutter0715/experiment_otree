@@ -3,13 +3,20 @@ Mid-period Feedback of Period {{ player.round_number }}
 {{ endblock }}
 
 {{ block content }}
-Your target for this period is <b>{{ player.beginning_target }}</b>.
-Your 1st half performance is <b>{{ player.num_correct_half1}}</b>.
+<p>Your target for this period is <b>{{ player.beginning_target }}</b>.</p>
+<p>Your 1st half performance is <b>{{ player.num_correct_half1}}</b>.</p>
 
 {{ if player.adjustment == 1 }}
-<p>
-Your target for this period has been adjusted from {{ player.beginning_target }} to <b>{{ player.adjusted_target }}</b>, because it was too difficult to attain.
-</p>
+    {{ if player.exp_order == 0 and player.round_number in [3, 4, 6, 8, 11] }}
+    <p>
+    Your target for this period has been adjusted from {{ player.beginning_target }} to <b>{{ player.adjusted_target }}</b>, because it was too difficult to attain.
+    </p>
+    {{endif}}
+    {{ if player.exp_order == 1 and player.round_number in [2, 5, 7, 10, 12] }}
+    <p>
+    Your target for this period has been adjusted from {{ player.beginning_target }} to <b>{{ player.adjusted_target }}</b>, because it was too difficult to attain.
+    </p>
+    {{endif}}
 {{endif}}
 
 {{ next_button }}
