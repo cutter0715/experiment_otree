@@ -15,18 +15,26 @@ Mid-period Feedback of Period {{ player.round_number }}
     </tr>
 </table>
 
+
 {{ if player.adjustment == 1 }}
     {{ if player.exp_order == 0 and player.round_number in [3, 4, 6, 8, 11] }}
+    <font size="5" color="red">
     <p>
-    Your target for this period has been adjusted from {{ player.beginning_target }} to <b>{{ player.adjusted_target }}</b>, because it was too difficult to attain.
+    Your target for this period has been adjusted from {{ player.beginning_target }} to <b>{{ player.adjusted_target }}</b>.
     </p>
+    </font>
     {{endif}}
     {{ if player.exp_order == 1 and player.round_number in [2, 5, 7, 10, 12] }}
+    <font size="5" color="red">
     <p>
-    Your target for this period has been adjusted from {{ player.beginning_target }} to <b>{{ player.adjusted_target }}</b>, because it was too difficult to attain.
+    Your target for this period has been adjusted from {{ player.beginning_target }} to <b>{{ player.adjusted_target }}</b>.
     </p>
+    </font>
     {{endif}}
 {{endif}}
+
+<br>
+<br>
 
 {{ next_button }}
 
