@@ -3,8 +3,17 @@ Mid-period Feedback of Period {{ player.round_number }}
 {{ endblock }}
 
 {{ block content }}
-<p>Your target for this period is <b>{{ player.beginning_target }}</b>.</p>
-<p>Your 1st half performance is <b>{{ player.num_correct_half1}}</b>.</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>Target</th>
+        <th>{{ player.beginning_target }}</th>
+    </tr>
+    <tr>
+        <th>1st Half Performance (Number of your correct answers)</th>
+        <th>{{ player.num_correct_half1}}</th>
+    </tr>
+</table>
 
 {{ if player.adjustment == 1 }}
     {{ if player.exp_order == 0 and player.round_number in [3, 4, 6, 8, 11] }}
