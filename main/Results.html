@@ -23,21 +23,21 @@ Result of of Period {{ player.round_number }}
             {{ player.adjusted_target }}
         </th>
     </tr>
+        {{endif}}
+        {{ if player.exp_order == 1 and player.round_number in [2, 5, 7, 10, 12] }}
+        <tr>
+            <th>
+                Target (Adjusted)
+            </th>
+            <th>
+                {{ player.adjusted_target }}
+            </th>
+        </tr>
+        {{endif}}
     {{endif}}
-    {{ if player.exp_order == 1 and player.round_number in [2, 5, 7, 10, 12] }}
     <tr>
-        <th>
-            Target (Adjusted)
-        </th>
-        <th>
-            {{ player.adjusted_target }}
-        </th>
-    </tr>
-    {{endif}}
-    {{endif}}
-    <tr>
-        <th>Performance (Number of your correct answers)</th>
-        <th>{{ player.num_correct }}</th>
+        <th>Performance</th>
+        <th>{{ player.num_score }}</th>
     </tr>
     <tr>
         <th>Payoff</th>

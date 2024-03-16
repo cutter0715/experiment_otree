@@ -67,9 +67,8 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    prolific_id = models.StringField(
+    prolific_id = models.StringField()
     label = 'Your Prolific ID'
-    )
     adjustment = models.BooleanField()
     informed = models.BooleanField()
     exp_order = models.BooleanField()

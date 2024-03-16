@@ -19,133 +19,35 @@ def get_task_module(player):
 
     if task == "decoding":
         if player.exp_order == 0:
-            if player.round_number == 1:
+            if player.round_number in [1, 2, 4, 6]:
                 if player.iteration % 2 == 1:   # normal
                     return task_decoding
                 else:
                     return task_decoding_2
-            if player.round_number == 2:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 3:
+            elif player.round_number in [3, 5]:
                 if player.iteration % 4 == 1:   # hard
                     return task_decoding
                 else:
                     return task_decoding_2
-            if player.round_number == 4:
-                if player.iteration % 4 == 1:   # hard
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 5:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 6:
-                if player.iteration % 4 == 1:   # hard
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 7:
-                if player.iteration % 2 == 1:  # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 8:
-                if player.iteration % 4 == 1:   # hard
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 9:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 10:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 11:
-                if player.iteration % 4 == 1:   # hard
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 12:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
+            
         if player.exp_order == 1:
-            if player.round_number == 1:
+            if player.round_number in [1, 3, 5, 6]:
                 if player.iteration % 2 == 1:   # normal
                     return task_decoding
                 else:
                     return task_decoding_2
-            if player.round_number == 2:
+            elif player.round_number in [2, 4]:
                 if player.iteration % 4 == 1:   # hard
                     return task_decoding
                 else:
                     return task_decoding_2
-            if player.round_number == 3:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 4:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 5:
-                if player.iteration % 4 == 1:   # hard
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 6:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 7:
-                if player.iteration % 4 == 1:   # hard
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 8:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 9:
-                if player.iteration % 4 == 1:   # hard
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 10:
-                if player.iteration % 4 == 1:   # hard
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 11:
-                if player.iteration % 2 == 1:  # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
-            if player.round_number == 12:
-                if player.iteration % 2 == 1:   # normal
-                    return task_decoding
-                else:
-                    return task_decoding_2
+        
 
 
 class C(BaseConstants):
     NAME_IN_URL = "main"
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 12
+    NUM_ROUNDS = 6
 
 class Subsession(BaseSubsession):
     pass
@@ -187,6 +89,7 @@ class Player(BasePlayer):
     num_correct_half1 = models.IntegerField(initial=0)
     num_correct_half2 = models.IntegerField(initial=0)
     num_failed = models.IntegerField(initial=0)
+    num_score = models.IntegerField(initial=0)
     beginning_target = models.IntegerField(initial=12)
     adjusted_target = models.IntegerField(initial=8)
     target_difficulty_1 = models.IntegerField(label="I will earn a bonus in this period.",
@@ -251,6 +154,7 @@ def get_progress(player: Player):
         num_correct=player.num_correct,
         num_incorrect=player.num_failed,
         iteration=player.iteration,
+        num_score=player.num_correct,
     )
 
 
@@ -351,12 +255,45 @@ def play_game(player: Player, message: dict):
         current.attempts += 1
 
         # update player progress
+        
         if current.is_correct:
             player.num_correct += 1
             if player.current_page == 1:  # Half1の場合
                 player.num_correct_half1 += 1
             elif player.current_page == 2:  # Half2の場合
                 player.num_correct_half2 += 1
+        
+        if player.exp_order == 0:
+            if player.round_number in [1, 2, 4, 6]:
+                if player.iteration % 2 == 1:   # normal
+                     if current.is_correct:
+                        player.num_score += 2
+                else:
+                     if current.is_correct:
+                        player.num_score += 4
+            elif player.round_number in [3, 5]:
+                if player.iteration % 4 == 1:   # hard
+                    if current.is_correct:
+                        player.num_score += 2
+                else:
+                     if current.is_correct:
+                        player.num_score += 4
+            
+        if player.exp_order == 1:
+            if player.round_number in [1, 3, 5, 6]:
+                if player.iteration % 2 == 1:   # normal
+                    if current.is_correct:
+                        player.num_score += 2
+                else:
+                     if current.is_correct:
+                        player.num_score += 4
+            elif player.round_number in [2, 4]:
+                if player.iteration % 4 == 1:   # hard
+                    if current.is_correct:
+                        player.num_score += 2
+                else:
+                    if current.is_correct:
+                        player.num_score += 4
 
         retries_left = params["attempts_per_puzzle"] - current.attempts
         p = get_progress(player)
@@ -370,6 +307,7 @@ def play_game(player: Player, message: dict):
         }
 
     raise RuntimeError("unrecognized message from client")
+
 
 
 class Survey_1(Page):

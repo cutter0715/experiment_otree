@@ -29,10 +29,8 @@ def generate_puzzle_fields():
         solution=solution,
     )
 
-
 def is_correct(response, puzzle):
     return puzzle.solution.lower() == response.lower()
-
 
 TEXT_SIZE = 32
 TEXT_PADDING = TEXT_SIZE
