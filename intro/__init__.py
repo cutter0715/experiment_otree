@@ -76,6 +76,7 @@ class Player(BasePlayer):
     num_trials = models.IntegerField(initial=0)
     num_correct = models.IntegerField(initial=0)
     num_failed = models.IntegerField(initial=0)
+    num_score = models.IntegerField(initial=0)
     question1 = models.BooleanField(
         label="Your task is decoding as many numbers as possible into alphabets within a time limit.",  # True
         choices=[[1, "True"], [0, "False"]],
@@ -261,6 +262,13 @@ def play_game(player: Player, message: dict):
         else:
             player.num_failed += 1
         player.num_trials += 1
+
+        if player.iteration % 2 == 1:
+            if current.is_correct:
+                    player.num_score += 1
+        else:
+            if current.is_correct:
+                     player.num_score += 2
 
         retries_left = params["attempts_per_puzzle"] - current.attempts
         p = get_progress(player)

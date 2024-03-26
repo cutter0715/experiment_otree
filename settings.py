@@ -18,7 +18,7 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1.00, participation_fee=6.00, doc=""
+    real_world_currency_per_point=1.00, participation_fee=4.50, doc=""
 )
 
 PARTICIPANT_FIELDS = ['is_dropout', 'adjustment', 'informed']
@@ -29,7 +29,7 @@ SESSION_FIELDS = ['params']
 LANGUAGE_CODE = "en"
 
 # e.g. EUR, GBP, CNY, JPY
-REAL_WORLD_CURRENCY_CODE = "USD"
+REAL_WORLD_CURRENCY_CODE = "GBP"
 USE_POINTS = False
 
 ADMIN_USERNAME = "admin"
@@ -46,7 +46,6 @@ SECRET_KEY = "2015765205890"
 # adjustments for testing
 # generating session configs for all varieties of features
 import sys
-
 
 if sys.argv[1] == 'test':
     MAX_ITERATIONS = 5

@@ -267,33 +267,33 @@ def play_game(player: Player, message: dict):
             if player.round_number in [1, 2, 4, 6]:
                 if player.iteration % 2 == 1:   # normal
                      if current.is_correct:
-                        player.num_score += 2
+                        player.num_score += 1
                 else:
                      if current.is_correct:
-                        player.num_score += 4
+                        player.num_score += 2
             elif player.round_number in [3, 5]:
                 if player.iteration % 4 == 1:   # hard
                     if current.is_correct:
-                        player.num_score += 2
+                        player.num_score += 1
                 else:
                      if current.is_correct:
-                        player.num_score += 4
+                        player.num_score += 2
             
         if player.exp_order == 1:
             if player.round_number in [1, 3, 5, 6]:
                 if player.iteration % 2 == 1:   # normal
                     if current.is_correct:
-                        player.num_score += 2
+                        player.num_score += 1
                 else:
                      if current.is_correct:
-                        player.num_score += 4
+                        player.num_score += 2
             elif player.round_number in [2, 4]:
                 if player.iteration % 4 == 1:   # hard
                     if current.is_correct:
-                        player.num_score += 2
+                        player.num_score += 1
                 else:
                     if current.is_correct:
-                        player.num_score += 4
+                        player.num_score += 2
 
         retries_left = params["attempts_per_puzzle"] - current.attempts
         p = get_progress(player)
@@ -397,22 +397,41 @@ class Half2(Page):
 class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        if player.adjustment == 0:
-            if player.num_correct >= player.beginning_target:  # Fixed Contract or Output Contract where an production level of 1 is provided
-                player.payoff = 1.80 + (player.num_correct - player.beginning_target) * 0.1
-            else:  # Output Contract where an production level less than 1 is provided
-                player.payoff = 0
-        elif player.adjustment == 1:  # Firm payoff calculation
-            if player.iteration % 4 == 1:
-                if player.num_correct >= player.adjusted_target:   # Fixed Contract or Output Contract where an production level of 1 is provided
-                    player.payoff = 1.80 + (player.num_correct - player.adjusted_target) * 0.1
-                else:  # Output Contract where an production level less than 1 is provided
-                    player.payoff = 0
-            if player.iteration % 2 == 1:
+        if player.exp_order == 0:
+            if player.adjustment == 0:
                 if player.num_correct >= player.beginning_target:  # Fixed Contract or Output Contract where an production level of 1 is provided
-                    player.payoff = 1.80 + (player.num_correct - player.beginning_target) * 0.1
+                    player.payoff = 1 + (player.num_score - player.beginning_target) * 0.1
                 else:  # Output Contract where an production level less than 1 is provided
                     player.payoff = 0
+            elif player.adjustment == 1:  # Firm payoff calculation
+                if player.round_number in [3,5]:
+                    if player.num_correct >= player.adjusted_target:   # Fixed Contract or Output Contract where an production level of 1 is provided
+                        player.payoff = 1 + (player.num_score - player.adjusted_target) * 0.1
+                    else:  # Output Contract where an production level less than 1 is provided
+                        player.payoff = 0
+                if player.round_number in [1,2,4,6]:
+                    if player.num_correct >= player.beginning_target:  # Fixed Contract or Output Contract where an production level of 1 is provided
+                        player.payoff = 1 + (player.num_score - player.beginning_target) * 0.1
+                    else:  # Output Contract where an production level less than 1 is provided
+                        player.payoff = 0
+        if player.exp_order == 1:
+            if player.adjustment == 0:
+                if player.num_correct >= player.beginning_target:  # Fixed Contract or Output Contract where an production level of 1 is provided
+                    player.payoff = 1 + (player.num_score - player.beginning_target) * 0.1
+                else:  # Output Contract where an production level less than 1 is provided
+                    player.payoff = 0
+            elif player.adjustment == 1:  # Firm payoff calculation
+                if player.round_number in [2,4]:
+                    if player.num_correct >= player.adjusted_target:   # Fixed Contract or Output Contract where an production level of 1 is provided
+                        player.payoff = 1 + (player.num_score - player.adjusted_target) * 0.1
+                    else:  # Output Contract where an production level less than 1 is provided
+                        player.payoff = 0
+                if player.round_number in [1,3,5,6]:
+                    if player.num_correct >= player.beginning_target:  # Fixed Contract or Output Contract where an production level of 1 is provided
+                        player.payoff = 1 + (player.num_score - player.beginning_target) * 0.1
+                    else:  # Output Contract where an production level less than 1 is provided
+                        player.payoff = 0
+
 
 class Ready(Page):
     timeout_seconds = 5
