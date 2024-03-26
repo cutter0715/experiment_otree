@@ -85,15 +85,7 @@ if sys.argv[1] == 'test':
         )
 
 # settings.py
+        
+ADMIN_USERNAME = 'admin'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'otreedb',
-        'USER': 'myuser',
-
-        'PASSWORD': 'ryota0715',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD'
